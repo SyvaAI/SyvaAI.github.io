@@ -1,2 +1,3 @@
-# SyvaAI-github.io
-All website files for SyväAI
+## SyväAI website files
+This contains all the files used on "syvaai.com". 
+
