@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPMSS94CFR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-CPMSS94CFR');
+  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SyväAI - Downloads</title>
+    <link rel="icon" href="/logos/logo/SyvaAI.png" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    
+    <style>
+        
+        /* Modern Dark Theme */
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Glassy Navbar */
+        .nav-blur {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #3b82f6, #9333ea);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        /* Card Hover Effect */
+        .card {
+            background: #181818;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+
+        * {
+          padding: 0;
+          margin: 0;
+        }
+
+        @keyframes scale {
+          100% {
+            transform: scale(1);
+          }
+        }
+
+        picture {
+            display: inline-block;
+            opacity: 0;
+            filter: blur(9px);
+          }
+
+
+
+        picture:nth-child(1) {
+          animation: fade-in 1.5s 0.1s forwards cubic-bezier(0.11, 0, 0.5, 0);
+        }
+
+
+        @keyframes fade-in {
+          100% {
+            opacity: 1;
+            filter: blur(0);
+          }
+        }
+    </style>
+    <style>
+        #images {
+            text-align: center; /* Centers inline elements like <picture> */
+        }
+
+        picture, img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%; /* Ensures the image is responsive */
+            height: auto;
+        }
+    </style>
+    <style>
+        html {
+            scroll-behavior: smooth;
+          }
+    </style>
+    <style>
+        body {
+          font-family: "Lato", sans-serif;
+        }
+        .popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgba(0, 0, 0);
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      display: none; /* Start hidden */
+      opacity: 0;
+      transition: opacity 0.5s;
+      max-width: 270px;
+      z-index: 1000;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .close-btn:hover {
+      color: red;
+    }
+        
+        .sidenav {
+          height: 100%;
+          width: 0;
+          position: fixed;
+          z-index: 1;
+          top: 75px;
+          left: 0;
+          background-color: #000000;
+          overflow-x: hidden;
+          transition: 0.5s;
+          padding-top: 60px;
+          text-align:center;
+        }
+        .imageandtext {
+    display: flex;
+    align-items: center; /* Aligns text and image vertically in the middle */
+    gap: 16px;          /* Adds space between image and text */
+}
+        
+        .sidenav a {
+          padding: 8px 8px 8px 32px;
+          text-decoration: none;
+          font-size: 25px;
+          color: #818181;
+          display: block;
+          transition: 0.3s;
+        
+        }
+        
+        .sidenav a:hover{
+          color: #f1f1f1;
+        }
+        
+        .sidenav .closebtn {
+          position: absolute;
+          top: 0;
+          right: 25px;
+          font-size: 36px;
+          margin-left: 50px;
+        }
+        
+        @media screen and (max-height: 450px) {
+          .sidenav {padding-top: 15px;}
+          .sidenav a {font-size: 18px;}
+        }
+        .dropbtn {
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px -8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    bottom: 100%; /* Position above the button */
+    left: 0;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 1px 1px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+        </style>
+        <script>
+            function openNav() {
+              document.getElementById("mySidenav").style.width = "100%";
+            }
+            
+            function closeNav() {
+              document.getElementById("mySidenav").style.width = "0";
+            }
+    </script>
+</head>
+
+
+<body>
+  <script>
+// Blocked countries
+const BLOCKED_COUNTRIES = ['CN', 'IR', 'KP', 'SY', 'CU', 'RU', 'BY', 'MM', 'VE', 'SD', 'AF', 'SL', 'UA', 'TR'];
+
+// Check user's country on page load
+async function checkGeoblock() {
+  try {
+    // Use free IP geolocation API
+    const response = await fetch('https://ipapi.co/json/');
+    const data = await response.json();
+    
+    const countryCode = data.country_code;
+    
+    console.log('User country:', countryCode);
+    
+    if (BLOCKED_COUNTRIES.includes(countryCode)) {
+      // Block access
+      document.body.innerHTML = `
+        <div style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          background: #1a1a1a;
+          color: white;
+          font-family: Arial, sans-serif;
+          text-align: center;
+          padding: 20px;
+        ">
+          <div>
+            <h1>Access Denied</h1>
+            <p>Access to this service is not available in your region.</p>
+            <p style="color: #888; font-size: 14px;">Country: ${countryCode}</p>
+          </div>
+        </div>
+      `;
+      
+      // Prevent any further script execution
+      throw new Error('Geoblocked');
+    }
+  } catch (error) {
+    if (error.message === 'Geoblocked') {
+      throw error;
+    }
+    // If geolocation fails, allow access (fail-open)
+    console.log('Geolocation check failed, allowing access');
+  }
+}
+
+// Run check immediately
+checkGeoblock();
+</script>
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="/chat/index.html" class="hover:text-blue-400"><b>Chat</b> with SyväAI</a>
+    <a href="contact.html" class="hover:text-blue-400">Contact</a>
+    <a href="donate.html" class="hover:text-green-400">Donate</a>
+      <a href="/chat/agreement.html" class="hover:text-blue-400">User Agreement</a>
+      <a href="https://syvaai.com/downloads.html" class="hover:text-blue-400">Downloads</a>
+      <a href="https://syvaai.com/credits.html" class="hover:text-blue-400">Credits</a>
+      <a href="https://syvaai.com/chat/license.html" class="hover:text-blue-400">License</a>
+      <a href="https://syvaai.zohodesk.com/portal/en/kb/syv%C3%A4ai" class="hover:text-blue-400">Help Center</a>
+  </div>
+
+  <div id="popup" class="popup">
+    <!-- <button id="close-btn" class="close-btn"><sup><small>close</small></sup></button>
+    <div style="text-align: center;"> -->
+      <!-- <h2 style="background: linear-gradient(90deg, #e4e126, #d64113);
+                  -webkit-background-clip: text;
+                  background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  text-fill-color: transparent;">
+        Look over here!
+      </h2>
+      <br>
+      <small>
+      <p>We are a small startup AI platform that started in the start of 2025.</p>
+      <p>And we are making absolutely <b>Zero</b> income.</p>
+      <p>To keep the project going, just like Wikipedia we are <b>100%</b> reliant on donations.</p>
+      <p>As little as <b>5 dollars</b> could keep our story going.</p>
+      <p>Plus, a portion of the donations we get will be sent to different areas in need of help, like Ukraine, Palestine, etc.</p>
+      <h3>This isn't about <b>our</b> story. This is about <b>everybody's</b> story.</h3>
+      </small>
+      <p><a href="down.html" title="Donate" target="_blank" class="w3-hover-opacity"><u><b>Donate</b></u></a></p>
+       -->
+    </div>
+  </div>
+
+    <!-- Navbar -->
+    <nav class="nav-blur fixed top-0 left-0 w-full shadow-md z-50 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html"><img src="/logos/logo/favicon/SyvaAI-Favicon.png" alt="SyväAI logo" class="h-10"></a>
+            <div class="hidden md:flex space-x-6">
+                <span style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
+            </div>
+            <span id="hamburger" class="md:hidden text-white text-2xl" style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
+        </div>
+    </nav>
+    <section class="text-center py-32">
+      <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .highlight {
+      background: linear-gradient(to right, #78ff78 0%, #78ff78 100%);
+      display: inline;
+      padding: 0 4px;
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 28px;
+      letter-spacing: 2px;
+    }
+    .btn-custom {
+      background-color: #78ff78;
+      color: black;
+      padding: 12px 24px;
+      border-radius: 9999px;
+      font-weight: 600;
+      display: inline-block;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body class="w3-container w3-padding-64">
+
+
+    <!-- Right section: Text -->
+    <div class="w3-padding-large">
+      <h1 style="font-size: 48px; line-height: 1.2;">
+        <strong>Credits</strong>
+      </h1>
+      
+    </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<h2>Images:</h2>
+<br>
+<p>User icon credit: Saepul Nahwan <br>
+Light/Dark icon credit : Freepik <br>
+People talking 1st image (first image on homepage): Canva Graphics (Sketchify)**<br>
+People talking 2nd image: Canva Graphics (Sketchify)**<br>
+User image: Saepul Nahwan<br>
+New Chat image: hafizdzakimcd** <br>
+<h2>UI:</h2>
+<br>
+<p>Text input bar: Fabio Cobb** <br>
+</p>
+<br>
+<br>
+<br>
+<p><b>Some photos/images on SyväAI have missing orgins/creators. If you have created a image and do not see your name, please contact us.</b></p>
+
+
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+    <script>
+      // Show popup after 3 seconds
+      window.onload = function() {
+        setTimeout(function() {
+          const popup = document.getElementById('popup');
+          popup.style.display = 'block'; // Make it block so it occupies space
+          setTimeout(function() {
+            popup.style.opacity = '1'; // Fade in
+          }, 10); // Slight delay to trigger CSS transition
+        }, 300);
+  
+        // Attach the close event after the DOM is fully loaded
+        const closeBtn = document.getElementById('close-btn');
+        closeBtn.onclick = function() {
+          const popup = document.getElementById('popup');
+          popup.style.opacity = '0'; // Fade out
+          setTimeout(function() {
+            popup.style.display = 'none'; // Hide after fade-out completes
+          }, 500);
+        };
+      };
+    </script>
+
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-32">
+    <div class="w3-center w3-padding-24"><sub> SyväAI is not a registered company. All business is conducted under the legal name "Daniel Grimsley".</sub>    </div>
+    <div class="w3-center w3-padding-24"><sub> *SyväAI is not a 501(c)(3) nonprofit corp. Donations are not tax-exempt, and are treated/taxed as profit.</sub>    </div>
+        <div class="w3-center w3-padding-24"><sub>**Images/UI have been edited to fit our website style. If you (the owner of a design) do not like this, please contact us,</sub>    </div>
+    <div class="w3-row-padding">
+      <div class="w3-third">
+        <img src="logos/logo/transparent/SyvaAI Text Only.png" style="width:50%;" class="w3-round">
+      </div>
+    </div>
+    </footer>
+    
+    <div class="w3-center w3-padding-24"><sub>© <a href="index.html" title="SyväAI" target="_blank" class="w3-hover-opacity">SyväAI</a> 2025. All rights reserved.</sub></div>
+  
+    </div>
+
+
+</body>
+
+</html>

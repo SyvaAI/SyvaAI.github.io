@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPMSS94CFR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-CPMSS94CFR');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SyväAI Home</title>
+    <link rel="icon" href="/logos/logo/favicon/SyvaAI-Favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-camo.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-vivid.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+
+<body bgcolor="0f0f0f" class="text-white font-roboto">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 w-full w3-vivid-black shadow-md z-50">
+      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center">
+          <a href=index.html><img src="/logos/logo/favicon/SyvaAI-Favicon.png" alt="SyväAI logo" class="h-10 cursor-pointer"></a>
+        </div>
+        <div class="hidden md:flex space-x-6">
+          <a href="chat.html" bgcolor="white" class="hover:text-blue-600">Chat with SyväAI</a>
+          <a href="how.html" bgcolor="white" class="hover:text-blue-600">How It Works</a>
+          <a href="price.html" bgcolor="white" class="hover:text-blue-600">Pricing</a>
+          <a href="contact.html" bgcolor="white" class="hover:text-blue-600">Contact</a>
+        </div>
+        <div class="md:hidden">
+          <button id="hamburger" class="text-white-800 focus:outline-none text-2xl">☰</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden fixed top-16 left-0 w-full w3-vivid-black shadow-md p-4 transition-all duration-300">
+        <a href="chat.html" class="block py-2 text-white-800 hover:text-blue-600"><b>Chat</b> with syväAI</a>
+        <a href="how.html" class="block py-2 text-white-800 hover:text-blue-600">How It Works</a>
+        <a href="price.html" class="block py-2 text-white-800 hover:text-blue-600">Pricing</a>
+        <a href="contact.html" class="block py-2 text-white-800 hover:text-blue-600">Contact</a>
+    </div>
+
+    <script>
+      document.getElementById("hamburger").addEventListener("click", function () {
+        let menu = document.getElementById("mobileMenu");
+        menu.classList.toggle("hidden");
+      });
+    </script>
+    <style>
+    @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    @keyframes scale {
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    picture {
+        display: inline-block;
+        opacity: 0;
+        filter: blur(9px);
+      }
+
+
+
+    picture:nth-child(1) {
+      animation: fade-in 1.5s 0.1s forwards cubic-bezier(0.11, 0, 0.5, 0);
+    }
+
+
+    @keyframes fade-in {
+      100% {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+</style>
+<style>
+    #images {
+        text-align: center; /* Centers inline elements like <picture> */
+    }
+
+    picture, img {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%; /* Ensures the image is responsive */
+        height: auto;
+    }
+</style>
+<style>
+    html {
+        scroll-behavior: smooth;
+      }
+</style>
+<style>
+    .button {
+      border: none;
+      color: grey;
+      padding: 8px 16px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      transition-duration: 0.4s;
+      cursor: pointer;
+      border-radius: 12px;
+    }
+
+    .button1 {
+      color: white;
+      border: 2px solid white;
+    }
+
+    .button1:hover {
+      color: grey;
+    }
+
+    .button2 {
+      background-color: white;
+      color: black;
+      border: 2px solid #008CBA;
+    }
+
+    .button2:hover {
+      background-color: #008CBA;
+      color: white;
+    }
+
+    </style>
+<style>
+        body {
+          margin: 0;
+        }
+
+        * {
+          box-sizing: border-box;
+        }
+
+        .row > .column {
+          padding: 0 8px;
+        }
+
+        .card {
+            padding: 16px;
+            text-align: center;
+            background-color: #444;
+            color: white;
+          }
+
+        .row:after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+
+        .column {
+            float: left;
+            width: 25%;
+            padding: 0 5px;
+          }
+        @media screen and (max-width: 600px) {
+            .column {
+              width: 100%;
+              display: block;
+              margin-bottom: 10px;
+            }
+          }
+
+        img.hover-shadow {
+          transition: 0.3s;
+        }
+
+        .hover-shadow:hover {
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+        </style>
+<br>
+<br>
+<br>
+<br>
+<div id="images" class="source">
+    <picture>
+        <source srcset="/logos/logo/transparent/SyvaAI-With-text.png" media="(max-width: 768px)">
+        <img src="/logos/logo/favicon/SyvaAI%20Text%20Only%20(1)%20(1).png" alt="SyväAI">
+    </picture>
+    <a href="#main"><button class="button button1">Learn More ▼</button></a>
+</div>
+
+
+    <!-- Hero Section -->
+    <section class="text-center py-32" id="main">
+        <h1 class="text-5xl font-bold">Your questions, actually <br> answered <span class="text-blue-500">correctly.</span></h1>
+        <p class="text-lg text-gray-600 mt-4">Ask a question, get an answer quickly.</p>
+
+    <!-- Features -->
+    <section class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 px-4 py-16">
+        <div class="bg-black p-6 shadow-lg rounded-lg text-center">
+            <h3 class="text-xl font-bold">Trustworthy Answers</h3>
+            <p class="text-white-600 mt-2">Unlike other models like Gemini, Syvä AI splits knowledge across multiple specialized models, each one designed for a difftrent niche, reducing errors.</p>
+        </div>
+        <div class="bg-black p-6 shadow-lg rounded-lg text-center">
+            <h3 class="text-xl font-bold">Affordable Pricing</h3>
+            <p class="text-white-600 mt-2">More features than other models will offer, for just $5/month. No hidden fees.</p>
+        </div>
+        <div class="bg-black p-6 shadow-lg rounded-lg text-center">
+            <h3 class="text-xl font-bold">Concise Responses</h3>
+            <p class="text-white-600 mt-2">No unnecessary rambling, just quick and precise answers.</p>
+        </div>
+        <div class="bg-black p-6 shadow-lg rounded-lg text-center">
+            <h3 class="text-xl font-bold">Privacy First</h3>
+            <p class="text-white-600 mt-2">We collect zero data. Your privacy is our priority.</p>
+        </div>
+        <div style="text-align: center;">
+          <a href="#price"><button class="button button1">Pricing ▼</button></a>
+        </div>
+    </section>
+    </section>
+
+     <div id="price">
+    <section class="text-center py-32">
+        <h1 class="text-5xl font-bold"><span class="text-blue-500">Explore</span> our pricing plans</h1>
+    <section class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 px-4 py-16">
+        <div class="bg-black p-6 shadow-lg rounded-lg text-center">
+            <h3 class="text-xl font-bold">Free</h3>
+            <p><i class="fa fa-check text-white-600 mt-2"></i>Talk to SyväAI on web</p>
+            <p><i class="fa fa-check text-white-600 mt-2"></i>Access to basic web info (unlike Claude AI)</p>
+            <p><i class="fa fa-check text-white-600 mt-2"></i>Access to one of our SyväAI models</p>
+        </div>
+        <div class="bg-black p-6 shadow-lg rounded-lg text-center">
+            <h3 class="text-xl font-bold">Pro <sup>(5$ per month)</sup></h3>
+            <p class="text-white-600 mt-2">More features than other models will offer, for just $5/month. No hidden fees.</p>
+        </div>
+        <div class="bg-black p-6 shadow-lg rounded-lg text-center">
+            <h3 class="text-xl font-bold">Team <sup>(8$ per month)</sup></h3>
+            <p class="text-white-600 mt-2">No unnecessary rambling, just quick and precise answers.</p>
+        </div>
+        <div class="bg-black p-6 shadow-lg rounded-lg text-center">
+            <h3 class="text-xl font-bold"><span class="text-blue-500">Early Access</span> <sup>(0.50$ per message)</sup></h3>
+            <p class="text-white-600 mt-2">We collect zero data. Your privacy is our priority.</p>
+        </div>
+    </section>
+    </section>
+
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white text-center py-6">
+        <p>© Syvä (SUU-vah) AI 2025. All rights reserved.</p>
+        <div class="mt-2">
+            <a href="policy.html" class="text-gray-400 hover:text-white">Terms & Conditions</a> |
+            <a href="contact.html" class="text-gray-400 hover:text-white">Contact Us</a>
+        </div>
+    </footer>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "syvaai-website.firebaseapp.com",
+            projectId: "syvaai-website",
+            storageBucket: "syvaai-website.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID",
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        document.getElementById("google-sign-in-btn").addEventListener("click", () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then(result => {
+                console.log("User signed in:", result.user);
+            }).catch(error => {
+                console.error("Error during sign-in:", error);
+            });
+        });
+    </script>
+</body>
+</html>

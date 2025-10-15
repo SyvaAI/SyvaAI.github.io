@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPMSS94CFR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-CPMSS94CFR');
+  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="icon" href="/logos/logo/SyvaAI.png" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    
+    <style>
+        
+        /* Modern Dark Theme */
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Glassy Navbar */
+        .nav-blur {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #3b82f6, #9333ea);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        /* Card Hover Effect */
+        .card {
+            background: #181818;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+    <style>
+        @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+
+        * {
+          padding: 0;
+          margin: 0;
+        }
+
+        @keyframes scale {
+          100% {
+            transform: scale(1);
+          }
+        }
+
+        picture {
+            display: inline-block;
+            opacity: 0;
+            filter: blur(9px);
+          }
+
+
+
+        picture:nth-child(1) {
+          animation: fade-in 1.5s 0.1s forwards cubic-bezier(0.11, 0, 0.5, 0);
+        }
+
+
+        @keyframes fade-in {
+          100% {
+            opacity: 1;
+            filter: blur(0);
+          }
+        }
+    </style>
+    <style>
+        #images {
+            text-align: center; /* Centers inline elements like <picture> */
+        }
+
+        picture, img {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%; /* Ensures the image is responsive */
+            height: auto;
+        }
+    </style>
+    <style>
+        html {
+            scroll-behavior: smooth;
+          }
+    </style>
+    <style>
+        body {
+          font-family: "Lato", sans-serif;
+        }
+        
+        .sidenav {
+          height: 100%;
+          width: 0;
+          position: fixed;
+          z-index: 1;
+          top: 75px;
+          left: 0;
+          background-color: #000000;
+          overflow-x: hidden;
+          transition: 0.5s;
+          padding-top: 60px;
+          text-align:center;
+        }
+        
+        .sidenav a {
+          padding: 8px 8px 8px 32px;
+          text-decoration: none;
+          font-size: 25px;
+          color: #818181;
+          display: block;
+          transition: 0.3s;
+        
+        }
+        
+        .sidenav a:hover{
+          color: #f1f1f1;
+        }
+        
+        .sidenav .closebtn {
+          position: absolute;
+          top: 0;
+          right: 25px;
+          font-size: 36px;
+          margin-left: 50px;
+        }
+        
+        @media screen and (max-height: 450px) {
+          .sidenav {padding-top: 15px;}
+          .sidenav a {font-size: 18px;}
+        }
+        </style>
+        <style>
+            .container {
+              position: relative;
+              width: 45%;
+            }
+            
+            .image {
+              display: block;
+              width: 45%;
+              height: auto;
+            }
+            
+            .overlay {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              height: 100%;
+              width: 45%;
+              opacity: 0;
+              transition: .5s ease;
+              background-color: #008CBA;
+            }
+            
+            .container:hover .overlay {
+              opacity: 1;
+            }
+            
+          </style>
+          
+          <style>
+            .button {
+              display: inline-block;
+              padding: 10px 20px;
+              text-align: center;
+              text-decoration: none;
+              color: #ffffff;
+              background-color: #7aa8b7;
+              border-radius: 6px;
+              outline: none;
+              transition: 0.3s;
+            }
+            .button:hover {
+              background-color: #c2c7c7;
+            }
+          </style>
+        <script>
+            function openNav() {
+              document.getElementById("mySidenav").style.width = "100%";
+            }
+            
+            function closeNav() {
+              document.getElementById("mySidenav").style.width = "0";
+            }
+    </script>
+</head>
+
+<body>
+<body>
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="/chat/index.html" class="hover:text-blue-400"><b>Chat</b> with SyväAI</a>
+    <a href="contact.html" class="hover:text-blue-400">Contact</a>
+    <a href="donate.html" class="hover:text-green-400">Donate</a>
+      <a href="/chat/agreement.html" class="hover:text-blue-400">User Agreement</a>
+      <a href="https://syvaai.com/downloads.html" class="hover:text-blue-400">Downloads</a>
+      <a href="https://syvaai.com/credits.html" class="hover:text-blue-400">Credits</a>
+      <a href="https://syvaai.com/chat/license.html" class="hover:text-blue-400">License</a>
+      <a href="https://syvaai.zohodesk.com/portal/en/kb/syv%C3%A4ai" class="hover:text-blue-400">Help Center</a>
+  </div>
+  <!-- <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="chatnew.html" class="hover:text-blue-400"><b>Chat</b> with SyväAI</a>
+    <a href="signup.html" class="hover:text-blue-400">Sign up/Sign In</a>
+    <a href="how.html" class="hover:text-blue-400">How It Works</a>
+    <a href="price.html" class="hover:text-blue-400">Pricing</a>
+    <a href="contact.html" class="hover:text-blue-400">Contact</a>
+      <a href="products.html" class="hover:text-blue-400">Products</a>
+      <a href="news.html" class="hover:text-blue-400">News</a>
+      <a href="toc.html" class="hover:text-blue-400">Terms of service</a>
+      <a href="useragree.html" class="hover:text-blue-400">User Agreement</a>
+  </div> -->
+
+    <!-- Navbar -->
+    <nav class="nav-blur fixed top-0 left-0 w-full shadow-md z-50 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html"><img src="/logos/logo/favicon/SyvaAI-Favicon.png" alt="SyväAI logo" class="h-10"></a>
+            <div class="hidden md:flex space-x-6">
+                <span style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
+            </div>
+            <span id="hamburger" class="md:hidden text-white text-2xl" style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
+        </div>
+    </nav>
+    <section class="text-center py-32">
+    <script>
+        document.getElementById("hamburger").addEventListener("click", function () {
+          let menu = document.getElementById("mobileMenu");
+          menu.classList.toggle("hidden");
+        });
+    </script>
+
+<br>
+<br>
+<br>
+    <!-- Hero Section -->
+    <div class="w3-container w3-red">
+        <h1>Your message failed to send. Please try again. If issue presists please email us.</h1>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+  
+  
+    </div>
+    </footer>
+    
+  
+  
+
+
+</body>
+
+</html>
