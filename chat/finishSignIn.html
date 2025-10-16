@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Email link completion page for SyväAI sign-in flow -->
   <script>
   // Apply dark mode class *before* page paints
   (function () {
@@ -13,6 +14,7 @@
 <head>
 </head>
 <body>
+    <!-- Handle Firebase email link sign-in completion -->
     <script>
         import { getAuth, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
 
@@ -50,3 +52,4 @@ if (isSignInWithEmailLink(auth, window.location.href)) {
 }
     </script>
 </body>
+</html>

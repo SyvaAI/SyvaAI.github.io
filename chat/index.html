@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Authenticated chat interface for SyväAI conversations -->
   <script>
   // Apply dark mode class *before* page paints
   (function () {
@@ -21,17 +22,18 @@
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<!-- Replace with Firebase v8.10.0 CDN links -->
+<!-- Firebase v8 SDK bundles for chat authentication -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- ADD THIS -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- Firestore enables chat history storage -->
     <script type="module" src="index.js"></script>
 </head>
 <body>
+  <!-- Runtime geoblocking logic for sanctioned regions -->
   <script>
 // Blocked countries
 const BLOCKED_COUNTRIES = ['CN', 'IR', 'KP', 'SY', 'CU', 'RU', 'BY', 'MM', 'VE', 'SD', 'AF', 'SL', 'UA', 'TR'];
@@ -84,6 +86,7 @@ async function checkGeoblock() {
 // Run check immediately
 checkGeoblock();
 </script>
+  <!-- Firebase initialization and authentication guard -->
   <script>
     const firebaseConfig = {
   apiKey: "AIzaSyD_qlUue2zbN98YbZEdiTAUoGfD9AQ1250",
@@ -111,7 +114,8 @@ if (!firebase.apps.length) {
 });
 
   </script>
-<!-- <body class="bg-gray-800"> -->
+<!-- Legacy dark background wrapper retained for reference -->
+    <!-- Layout and visual styling for chat workspace -->
     <style>
         /* General styles */
 body {
@@ -1743,8 +1747,9 @@ h2 {
 <div>
 <br>
 </div>
-<br>
-<!-- <div class="error-alert">
+  <br>
+  <!-- Legacy error banner retained for debugging
+  <!-- <div class="error-alert">
     <p class="alert-content">
       <svg
         stroke="currentColor"
@@ -1769,6 +1774,7 @@ h2 {
     </p>
   </div> -->
 
+<!-- Random greeting rotation for hero tagline -->
 <script>
 const messages = [
 "Hello!",
@@ -1807,8 +1813,9 @@ function setRandomGreeting() {
 setRandomGreeting();
 </script>
 
-<br>
-        <!-- <input type="text" id="input" placeholder="Message..."> -->
+  <br>
+          <!-- Legacy chat input markup retained for reference -->
+          <!-- <input type="text" id="input" placeholder="Message..."> -->
 
         <!-- <div class="group">
     
@@ -1874,14 +1881,16 @@ setRandomGreeting();
         <input type="text" id="input" placeholder="Message...">
         <br>
     </div> -->
-<div id="chatsText" class="hidden text-left">
+  <!-- Sidebar container populated with previous conversations -->
+  <div id="chatsText" class="hidden text-left">
   <div class="login-containertwo">
     <small><p style="color:gray;" class="text-left">Chats</p></small>
   </div>
 </div>
 
 
-    <!-- <div id="popup" class="popup">
+  <!-- Legacy cookie popup markup retained for reference
+  <!-- <div id="popup" class="popup">
         <div style="text-align: center;">
           <small>
             <p>We use cookies to remember your username and password, so you don't have to log in frequently.</p>
@@ -1949,6 +1958,7 @@ window.addEventListener("message", function(event) {
 
 
 
+          <!-- Dropdown menu visibility management -->
           <script>
  // ADD THIS AT THE TOP - Track session ID
 let currentSessionId = null;
@@ -2119,6 +2129,7 @@ async function startNewChat() {
 }
 
           </script>
+          <!-- Popup reminder visibility persistence -->
           <script>
   // Grab the text input
   const inputText = document.getElementById('input-text');
@@ -2218,8 +2229,9 @@ async function startNewChat() {
     renderChatList();
   }
 }
-</script>
-<script>
+  </script>
+  <!-- Persistent chat history synchronization -->
+  <script>
 // Firebase chat list only
 let chatSessions = {};
 let activeChatId = null;
@@ -2351,7 +2363,8 @@ async function saveMessageToFirebase(userMsg, aiMsg) {
   }
 }
 </script>
-<!-- User icon credit: Saepul Nahwan 
+<!-- Icon attribution references -->
+<!-- User icon credit: Saepul Nahwan
  Light/Dark icon credit: Freepik-->
 </body>
 </html>
