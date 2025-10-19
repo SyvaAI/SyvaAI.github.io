@@ -2,7 +2,8 @@
 <html lang="en">
 <!-- Downloads hub for SyväAI resources -->
 <head>
-<!-- Google Analytics integration for traffic insights -->
+<!-- Metadata for downloads page -->
+<!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPMSS94CFR"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -181,20 +182,39 @@ checkGeoblock();
       <a href="https://syvaai.zohodesk.com/portal/en/kb/syv%C3%A4ai" class="hover:text-blue-400">Help Center</a>
   </div>
 
-  <!-- Timed donation prompt container (content populated dynamically) -->
-  <div id="popup" class="popup"></div>
+  <div id="popup" class="popup">
+    <!-- <button id="close-btn" class="close-btn"><sup><small>close</small></sup></button>
+    <div style="text-align: center;"> -->
+      <!-- <h2 style="background: linear-gradient(90deg, #e4e126, #d64113);
+                  -webkit-background-clip: text;
+                  background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  text-fill-color: transparent;">
+        Look over here!
+      </h2>
+      <br>
+      <small>
+      <p>We are a small startup AI platform that started in the start of 2025.</p>
+      <p>And we are making absolutely <b>Zero</b> income.</p>
+      <p>To keep the project going, just like Wikipedia we are <b>100%</b> reliant on donations.</p>
+      <p>As little as <b>5 dollars</b> could keep our story going.</p>
+      <p>Plus, a portion of the donations we get will be sent to different areas in need of help, like Ukraine, Palestine, etc.</p>
+      <h3>This isn't about <b>our</b> story. This is about <b>everybody's</b> story.</h3>
+      </small>
+      <p><a href="down.html" title="Donate" target="_blank" class="w3-hover-opacity"><u><b>Donate</b></u></a></p>
+       -->
+    </div>
+  </div>
 
-    <!-- Sticky navigation bar with hamburger trigger -->
+    <!-- Shared sticky navigation -->
     <nav class="nav-blur fixed top-0 left-0 w-full shadow-md z-50 p-4">
         <div class="container mx-auto flex justify-between items-center">
             <a href="index.html"><img src="/logos/logo/favicon/SyvaAI-Favicon.png" alt="SyväAI logo" class="h-10"></a>
-            <div class="hidden md:flex space-x-6">
-                <span style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
-            </div>
-            <span id="hamburger" class="md:hidden text-white text-2xl" style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
+            <!-- Menu trigger accessible at all breakpoints -->
+            <button id="hamburger" class="text-white text-2xl" style="font-size:30px;cursor:pointer" onclick="openNav()" aria-label="Open navigation">☰</button>
         </div>
     </nav>
-    <!-- Hero banner introducing the downloads catalog -->
+    <!-- Downloads hero section -->
     <section class="text-center py-32">
       <!-- Hero-specific typography and button styling -->
       <style>
