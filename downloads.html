@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Downloads hub for SyväAI resources -->
 <head>
 <!-- Metadata for downloads page -->
 <!-- Google tag (gtag.js) -->
@@ -22,7 +23,8 @@
     <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    
+
+    <!-- Core visual theme and reusable utility classes -->
     <style>
         
         /* Modern Dark Theme */
@@ -37,95 +39,15 @@
             background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(10px);
         }
-
-        /* Button Styles */
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 18px;
-            border-radius: 8px;
-            transition: all 0.3s ease-in-out;
-            font-weight: bold;
-        }
-
-        .btn-primary {
-            background: linear-gradient(90deg, #3b82f6, #9333ea);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            opacity: 0.8;
-            transform: scale(1.05);
-        }
-
-        /* Card Hover Effect */
-        .card {
-            background: #181818;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
     </style>
-    <style>
-        @import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
-
-        * {
-          padding: 0;
-          margin: 0;
-        }
-
-        @keyframes scale {
-          100% {
-            transform: scale(1);
-          }
-        }
-
-        picture {
-            display: inline-block;
-            opacity: 0;
-            filter: blur(9px);
-          }
-
-
-
-        picture:nth-child(1) {
-          animation: fade-in 1.5s 0.1s forwards cubic-bezier(0.11, 0, 0.5, 0);
-        }
-
-
-        @keyframes fade-in {
-          100% {
-            opacity: 1;
-            filter: blur(0);
-          }
-        }
-    </style>
-    <style>
-        #images {
-            text-align: center; /* Centers inline elements like <picture> */
-        }
-
-        picture, img {
-            display: block;
-            margin: 0 auto;
-            max-width: 100%; /* Ensures the image is responsive */
-            height: auto;
-        }
-    </style>
+    <!-- Smooth scrolling support for anchor navigation -->
     <style>
         html {
             scroll-behavior: smooth;
           }
     </style>
+    <!-- Layout rules for side navigation and popup messaging -->
     <style>
-        body {
-          font-family: "Lato", sans-serif;
-        }
         .popup {
       position: fixed;
       bottom: 20px;
@@ -140,17 +62,6 @@
       max-width: 270px;
       z-index: 1000;
     }
-    .close-btn {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .close-btn:hover {
-      color: red;
-    }
-        
         .sidenav {
           height: 100%;
           width: 0;
@@ -164,12 +75,6 @@
           padding-top: 60px;
           text-align:center;
         }
-        .imageandtext {
-    display: flex;
-    align-items: center; /* Aligns text and image vertically in the middle */
-    gap: 16px;          /* Adds space between image and text */
-}
-        
         .sidenav a {
           padding: 8px 8px 8px 32px;
           text-decoration: none;
@@ -193,49 +98,12 @@
         }
         
         @media screen and (max-height: 450px) {
-          .sidenav {padding-top: 15px;}
+        .sidenav {padding-top: 15px;}
           .sidenav a {font-size: 18px;}
         }
-        .dropbtn {
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px -8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    bottom: 100%; /* Position above the button */
-    left: 0;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 1px 1px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
 
         </style>
+        <!-- Drawer toggling helpers for mobile navigation -->
         <script>
             function openNav() {
               document.getElementById("mySidenav").style.width = "100%";
@@ -248,6 +116,7 @@
 </head>
 
 <body>
+  <!-- Runtime geoblocking logic for sanctioned regions -->
   <script>
 // Blocked countries
 const BLOCKED_COUNTRIES = ['CN', 'IR', 'KP', 'SY', 'CU', 'RU', 'BY', 'MM', 'VE', 'SD', 'AF', 'SL', 'UA', 'TR'];
@@ -300,6 +169,7 @@ async function checkGeoblock() {
 // Run check immediately
 checkGeoblock();
 </script>
+  <!-- Fullscreen slide-in navigation panel -->
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="/chat/index.html" class="hover:text-blue-400"><b>Chat</b> with SyväAI</a>
@@ -346,10 +216,8 @@ checkGeoblock();
     </nav>
     <!-- Downloads hero section -->
     <section class="text-center py-32">
+      <!-- Hero-specific typography and button styling -->
       <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
     .highlight {
       background: linear-gradient(to right, #78ff78 0%, #78ff78 100%);
       display: inline;
@@ -374,7 +242,7 @@ checkGeoblock();
 <body class="w3-container w3-padding-64">
 
 
-    <!-- Right section: Text -->
+    <!-- Downloads page headline -->
     <div class="w3-padding-large">
       <h1 style="font-size: 48px; line-height: 1.2;">
         <strong>Downloads</strong>
@@ -389,6 +257,7 @@ checkGeoblock();
 <br>
 <br>
 
+<!-- Download catalog entries -->
 <h2>Website dumps/downloads:</h2>
 <br>
     <section>
@@ -425,6 +294,7 @@ checkGeoblock();
     <br>
 
 
+    <!-- Popup show/hide timing control -->
     <script>
       // Show popup after 3 seconds
       window.onload = function() {
@@ -438,17 +308,19 @@ checkGeoblock();
   
         // Attach the close event after the DOM is fully loaded
         const closeBtn = document.getElementById('close-btn');
-        closeBtn.onclick = function() {
-          const popup = document.getElementById('popup');
-          popup.style.opacity = '0'; // Fade out
-          setTimeout(function() {
-            popup.style.display = 'none'; // Hide after fade-out completes
-          }, 500);
-        };
+        if (closeBtn) {
+          closeBtn.onclick = function() {
+            const popup = document.getElementById('popup');
+            popup.style.opacity = '0'; // Fade out
+            setTimeout(function() {
+              popup.style.display = 'none'; // Hide after fade-out completes
+            }, 500);
+          };
+        }
       };
     </script>
 
-  <!-- Footer -->
+  <!-- Footer with distribution disclaimers -->
   <footer class="w3-container w3-padding-32">
     <div class="w3-center w3-padding-24"><sub> SyväAI is not a registered company. All business is conducted under the legal name "Daniel Grimsley".</sub>    </div>
     <div class="w3-center w3-padding-24"><sub> *SyväAI is not a 501(c)(3) nonprofit corp. Donations are not tax-exempt, and are treated/taxed as profit.</sub>    </div>
