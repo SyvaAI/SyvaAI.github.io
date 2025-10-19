@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Account creation page for SyväAI chat -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 </head>
 <body>
+    <!-- Runtime geoblocking logic for sanctioned regions -->
     <script>
 // Blocked countries
 const BLOCKED_COUNTRIES = ['CN', 'IR', 'KP', 'SY', 'CU', 'RU', 'BY', 'MM', 'VE', 'SD', 'AF', 'SL', 'UA', 'TR'];
@@ -65,6 +67,7 @@ async function checkGeoblock() {
 // Run check immediately
 checkGeoblock();
 </script>
+    <!-- Styling for signup card and agreement embed -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -145,6 +148,7 @@ checkGeoblock();
 }
     </style>
 
+    <!-- Signup form with embedded user agreement -->
     <div class="login-container">
         <div class="create-account-container">
             <h2>Create an Account</h2>
@@ -164,6 +168,7 @@ checkGeoblock();
         </div>
     </div>
 
+    <!-- Firebase signup flow wiring -->
     <script type="module">
         // Your Firebase config
         const firebaseConfig = {
