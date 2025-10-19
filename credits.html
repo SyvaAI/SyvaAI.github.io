@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Metadata for credits page -->
 <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPMSS94CFR"></script>
   <script>
@@ -336,16 +337,15 @@ checkGeoblock();
     </div>
   </div>
 
-    <!-- Navbar -->
+    <!-- Shared sticky navigation -->
     <nav class="nav-blur fixed top-0 left-0 w-full shadow-md z-50 p-4">
         <div class="container mx-auto flex justify-between items-center">
             <a href="index.html"><img src="/logos/logo/favicon/SyvaAI-Favicon.png" alt="SyväAI logo" class="h-10"></a>
-            <div class="hidden md:flex space-x-6">
-                <span style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
-            </div>
-            <span id="hamburger" class="md:hidden text-white text-2xl" style="font-size:30px;cursor:pointer" onclick="openNav()">☰</span>
+            <!-- Menu trigger accessible at all breakpoints -->
+            <button id="hamburger" class="text-white text-2xl" style="font-size:30px;cursor:pointer" onclick="openNav()" aria-label="Open navigation">☰</button>
         </div>
     </nav>
+    <!-- Credits hero section -->
     <section class="text-center py-32">
       <style>
     body {

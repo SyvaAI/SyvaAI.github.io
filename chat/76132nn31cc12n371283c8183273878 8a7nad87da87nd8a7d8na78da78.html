@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Lightweight chat interface variant for SyväAI -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,13 +12,14 @@
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<!-- Replace with Firebase v8.10.0 CDN links -->
+<!-- Firebase v8 SDK bundles for chat authentication -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
     <script type="module" src="index.js"></script>
 </head>
 <body>
+  <!-- Runtime geoblocking logic for sanctioned regions -->
   <script>
 // Blocked countries
 const BLOCKED_COUNTRIES = ['CN', 'IR', 'KP', 'SY', 'CU', 'RU', 'BY', 'MM', 'VE', 'SD', 'AF', 'SL', 'UA', 'TR'];
@@ -70,6 +72,7 @@ async function checkGeoblock() {
 // Run check immediately
 checkGeoblock();
 </script>
+  <!-- Firebase initialization and authentication guard -->
   <script>
     const firebaseConfig = {
   apiKey: "AIzaSyD_qlUue2zbN98YbZEdiTAUoGfD9AQ1250",
@@ -97,7 +100,7 @@ if (!firebase.apps.length) {
 });
 
   </script>
-<!-- <body class="bg-gray-800"> -->
+<!-- Legacy dark background wrapper retained for reference -->
     <style>
         /* General styles */
 body {

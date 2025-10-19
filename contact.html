@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Metadata, analytics, and shared styles for the contact page -->
 <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-CPMSS94CFR"></script>
   <script>
@@ -303,17 +304,22 @@ checkGeoblock();
       <a href="useragree.html" class="hover:text-blue-400">User Agreement</a>
   </div> -->
 
-    <!-- Navbar -->
+    <!-- Sticky navbar reused across marketing pages -->
     <nav class="nav-blur fixed top-0 left-0 w-full shadow-md z-50 p-4">
         <div class="container mx-auto flex justify-between items-center">
             <a href="index.html"><img src="/logos/logo/favicon/SyvaAI-Favicon.png" alt="SyväAI logo" class="h-10"></a>
-            <div class="hidden md:flex space-x-6">            </div>        </div>
+            <!-- One menu control for all breakpoints -->
+            <button id="hamburger" class="text-white text-2xl" style="font-size:30px;cursor:pointer" onclick="openNav()" aria-label="Open navigation">☰</button>
+        </div>
     </nav>
+    <!-- Hero introduction for support contacts -->
     <section class="text-center py-32">
     <script>
         document.getElementById("hamburger").addEventListener("click", function () {
-          let menu = document.getElementById("mobileMenu");
-          menu.classList.toggle("hidden");
+          const menu = document.getElementById("mobileMenu");
+          if (menu) {
+            menu.classList.toggle("hidden");
+          }
         });
     </script>
 
@@ -328,7 +334,7 @@ checkGeoblock();
 <br>
     </section>
 
-    <!-- Features -->
+    <!-- Contact form -->
     <div id="main">
         <div class="w3-container w3-padding-32" id="contact">
             <!-- Contact Section -->
