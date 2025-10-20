@@ -945,47 +945,6 @@ h2 {
 .messageBox:focus-within {
   border: 1px solid #606060;
 }
-.fileUploadWrapper {
-  width: fit-content;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-#file {
-  display: none;
-}
-.fileUploadWrapper label {
-  cursor: pointer;
-  width: fit-content;
-  height: fit-content;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-.fileUploadWrapper label svg {
-  height: 18px;
-}
-.fileUploadWrapper label svg path {
-  transition: all 0.3s;
-}
-.fileUploadWrapper label svg circle {
-  transition: all 0.3s;
-}
-.fileUploadWrapper label:hover svg path {
-  stroke: #fff;
-}
-.fileUploadWrapper label:hover svg circle {
-  stroke: #fff;
-  fill: #3c3c3c;
-}
-.fileUploadWrapper label:hover .tooltip {
-  display: block;
-  opacity: 1;
-}
 .tooltip {
   position: absolute;
   top: -40px;
@@ -1758,35 +1717,7 @@ h2 {
 <div class="group">
   <!-- From Uiverse.io by mpody11 --> 
 <div class="messageBox">
-  <div class="fileUploadWrapper">
-    <label for="file">
-      <svg viewBox="0 0 337 337" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle
-          cx="168.5"
-          cy="168.5"
-          r="158.5"
-          fill="none"
-          stroke="#6c6c6c"
-          stroke-width="20"
-        ></circle>
-        <path
-          d="M167.759 79V259"
-          stroke="#6c6c6c"
-          stroke-width="25"
-          stroke-linecap="round"
-        ></path>
-        <path
-          d="M79 167.138H259"
-          stroke="#6c6c6c"
-          stroke-width="25"
-          stroke-linecap="round"
-        ></path>
-      </svg>
-      <span class="tooltip">Add an image</span>
-    </label>
-    <input name="file" id="file" type="file" />
-  </div>
-  <input id="messageInput" type="text" placeholder="Message..." required="" />
+  <input id="messageInput" type="text" placeholder="Say somthing..." required="" />
   <button id="sendButton">
     <svg viewBox="0 0 664 663" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
