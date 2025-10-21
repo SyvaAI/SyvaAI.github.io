@@ -2325,10 +2325,10 @@ function renderChatList() {
 function loadChatFromList(chatId) {
   const chat = chatSessions[chatId];
   if (!chat) return;
-  
+
   // Clear current chat
   document.getElementById('chat').innerHTML = '';
-  
+
   // Load messages
   chat.messages.forEach(msg => {
     const messageDiv = document.createElement('div');
@@ -2337,14 +2337,18 @@ function loadChatFromList(chatId) {
     messageDiv.innerHTML = msg.content;
     document.getElementById('chat').appendChild(messageDiv);
   });
-  
-  // Set as active
+
+  // ✅ Set as active
   activeChatId = chatId;
   currentSessionId = chat.sessionId;
-  
+
+  // ✅ Rerender sidebar to update highlight
+  renderChatList();
+
   // Close sidebar
   document.getElementById('chatsText').classList.add('hidden');
 }
+
 
 async function saveMessageToFirebase(userMsg, aiMsg) {
   const user = firebase.auth().currentUser;
