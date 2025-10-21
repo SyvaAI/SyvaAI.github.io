@@ -216,10 +216,10 @@ window.onload = function () {
     event.preventDefault();
 
     // first: send the message to you
-    emailjs.sendForm('service_c0vqn1d', 'template_e8o6vjk', this)
+    emailjs.sendForm('service_c0vqn1d', 'template_0dr1pas', this)
       .then(() => {
         // second: auto-reply to sender
-        emailjs.send('service_c0vqn1d', 'template_138ek2d', {
+        emailjs.send('service_c0vqn1d', 'template_0dr1pas', {
           user_email: this.user_email.value,
           user_name: this.user_name.value
         });
