@@ -1901,17 +1901,31 @@ setRandomGreeting();
           <button id="close-btn" class="close-btn">Ok</button>
           </div> -->
 <script>
-function openIframe(url) {
-  document.getElementById("iframeBox").src = url; // matches your iframe ID
-  document.getElementById("iframePopup").style.display = "flex"; // matches popup ID
-}
-
-// Listen for messages from iframe
-window.addEventListener("message", function(event) {
-  if (event.data === "close-iframe") {
-    document.getElementById("iframePopup").style.display = "none";
+  if (localStorage.getItem(DARK_MODE_KEY) === 'true') {
+    enableDarkMode();
   }
-});
+
+  toggle.addEventListener('click', () => {
+    if (body.classList.contains('dark-mode')) {
+      disableDarkMode();
+    } else {
+      enableDarkMode();
+    }
+  });
+
+  function enableDarkMode() {
+    body.classList.add('dark-mode');
+    if (cardOverlay) cardOverlay.classList.add('dark');
+    if (cardInner) cardInner.classList.add('dark');
+    localStorage.setItem(DARK_MODE_KEY, 'true');
+  }
+
+  function disableDarkMode() {
+    body.classList.remove('dark-mode');
+    if (cardOverlay) cardOverlay.classList.remove('dark');
+    if (cardInner) cardInner.classList.remove('dark');
+    localStorage.setItem(DARK_MODE_KEY, 'false');
+  }
 </script>
 
 
@@ -1923,8 +1937,8 @@ window.addEventListener("message", function(event) {
   const DARK_MODE_KEY = 'darkMode';
 
   // Select card elements
-  const card = document.querySelector('card-inner"');
-  const cardOverlay = document.querySelector('card-inner"');
+  const card = document.querySelector('.card');
+  const cardOverlay = document.querySelector('.card-overlay');
   const cardInner = document.querySelector('.card-inner');
 
   // Load saved mode
