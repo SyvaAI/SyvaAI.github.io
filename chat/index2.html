@@ -1724,7 +1724,28 @@ h2 {
   }
 </script>
 
+<script>
+  function openIframe(url) {
+  const iframeContainer = document.createElement("div");
+  iframeContainer.classList.add("iframe-overlay");
+  iframeContainer.innerHTML = `
+    <div class="iframe-header">
+      <button id="closeIframe" class="close-btn">×</button>
+      <span class="iframe-url">${url}</span>
+    </div>
+    <iframe src="${url}" frameborder="0" allowfullscreen></iframe>
+  `;
 
+  document.body.appendChild(iframeContainer);
+
+  // close handler
+  document.getElementById("closeIframe").addEventListener("click", () => {
+    iframeContainer.classList.add("fade-out");
+    setTimeout(() => iframeContainer.remove(), 300);
+  });
+}
+
+</script>
 
 
 
