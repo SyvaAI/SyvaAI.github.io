@@ -120,9 +120,18 @@ if (!firebase.apps.length) {
     <style>
         /* General styles */
 body {
-    body {
-      font-family: 'Inter', sans-serif;
+  font-family: 'Inconsolata', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
       background-color: #0d0d0d;
+    transition: background-color 0.3s, color 0.3s;
+
+}
+    body.dark-mode {
+      background-color: #212121;
       color: white;
     }
 .chat-container {
