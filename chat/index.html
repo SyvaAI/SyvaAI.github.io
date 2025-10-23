@@ -33,7 +33,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- Firestore enables chat history storage -->
     <script type="module" src="index.js"></script>
 </head>
-<body class="flex items-center justify-center min-h-screen">
+<body>
   <!-- Runtime geoblocking logic for sanctioned regions -->
   <script>
 // Blocked countries
@@ -126,9 +126,8 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-      background-color: #0d0d0d;
+    background-color: #FFFFFF;
     transition: background-color 0.3s, color 0.3s;
-
 }
     body.dark-mode {
       background-color: #212121;
@@ -1630,115 +1629,16 @@ h2 {
   }
 }
 
-/* --- Root Container for Positioning --- */
-.aui-modal-anchor-container {
-  /* fixed right-4 bottom-4 size-11 */
-  position: fixed;
-  right: 1rem; /* Adjust padding as needed */
-  bottom: 1rem; /* Adjust padding as needed */
-  width: 2.75rem; /* size-11 (44px) */
-  height: 2.75rem; /* size-11 (44px) */
-  z-index: 1000; /* Ensure it floats above other content */
-}
-
-/* --- Primary Button Styles --- */
-.aui-modal-button {
-  /* Default Colors (Tailwind bg-primary text-primary-foreground) */
-  --primary-color: #4f46e5; /* Example: Indigo-600 */
-  --primary-foreground: #ffffff; 
-  
-  /* Shared Button Properties */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem; /* p-1 */
-  width: 100%; /* size-full */
-  height: 100%; /* size-full */
-  
-  /* Appearance */
-  border: none;
-  border-radius: 9999px; /* rounded-full */
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow (a medium shadow) */
-  background-color: var(--primary-color);
-  color: var(--primary-foreground);
-  font-size: 0.875rem; /* text-sm */
-  line-height: 1.25rem;
-  font-weight: 500; /* font-medium */
-  cursor: pointer;
-
-  /* Transitions and Hover Effects */
-  transition: transform 0.2s ease, background-color 0.1s; /* transition-transform duration-200 */
-  
-  /* hover:bg-primary/90 */
-  opacity: 1; /* For disabled states */
-}
-
-.aui-modal-button:hover {
-  /* hover:scale-110 */
-  transform: scale(1.1);
-  /* A lighter shade for hover effect */
-  background-color: color-mix(in srgb, var(--primary-color), black 10%); 
-}
-
-.aui-modal-button:active {
-  /* active:scale-90 */
-  transform: scale(0.9);
-}
-
-/* --- Icon Styles and Animations --- */
-.aui-modal-icon {
-  /* absolute size-6 */
-  position: absolute;
-  width: 1.5rem; /* size-6 (24px) */
-  height: 1.5rem; /* size-6 (24px) */
-  
-  /* transition-all */
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-}
-
-/* State management for CLOSED icon (Bot icon) */
-.aui-modal-button-closed-icon[data-state="closed"] {
-  /* data-[state=closed]:scale-100 data-[state=closed]:rotate-0 */
-  transform: scale(1) rotate(0deg);
-  opacity: 1;
-}
-
-.aui-modal-button-closed-icon[data-state="open"] {
-  /* data-[state=open]:scale-0 data-[state=open]:rotate-90 */
-  transform: scale(0) rotate(90deg);
-  opacity: 0;
-}
-
-/* State management for OPEN icon (Close/Chevron icon) */
-.aui-modal-button-open-icon[data-state="closed"] {
-  /* data-[state=closed]:scale-0 data-[state=closed]:-rotate-90 */
-  transform: scale(0) rotate(-90deg);
-  opacity: 0;
-}
-
-.aui-modal-button-open-icon[data-state="open"] {
-  /* data-[state=open]:scale-100 data-[state=open]:rotate-0 */
-  transform: scale(1) rotate(0deg);
-  opacity: 1;
-}
-
-/* Visually hidden text for accessibility */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
 
     </style>
 
-    <div class="w-full max-w-sm bg-[#0d0d0d] p-6 rounded-xl space-y-6">
+
+
+  <div class="card-overlay"></div>
+  <div class="card-inner">
+    <!-- Chat layout container keeps toolbar, transcript, and composer aligned -->
+    <div class="chat-shell">
+      <!-- Action toolbar: profile, theme toggle, conversation menu -->
       <div class="chat-toolbar">
         <div class="dropdown">
           <button onclick="myFunction()" class="userbutton"><img src="/logos/logo/user.png" height="20px" width="20px"></button>
@@ -1752,37 +1652,239 @@ h2 {
         <button onclick="myFunction3()" id="toggleChatsBtn" class="menubut"><img src="/logos/logo/menu.png" height="20px" width="20px"></button>
         <button onclick="startNewChat()" id="toggleChatsBtn" class="menubut"><img src="/logos/logo/newchat.png" height="20px" width="20px"></button>
       </div>
-    <!-- Header -->
-    <div>
-      <h1 class="text-2xl font-semibold">Hello there!</h1>
-      <p class="text-gray-400 mt-1">How can I help you today?</p>
-    </div>
-
-    <div id="chat"></div>
-
-    <!-- Suggested messages -->
-    <div class="space-y-3">
-      <button class="w-full text-left bg-[#1a1a1a] hover:bg-[#262626] transition rounded-xl px-4 py-3 text-sm">
-        <span class="text-white font-medium">What's the weather</span> 
-        <span class="text-gray-400">in San Francisco?</span>
-      </button>
-
-      <button class="w-full text-left bg-[#1a1a1a] hover:bg-[#262626] transition rounded-xl px-4 py-3 text-sm">
-        <span class="text-white font-medium">Explain React hooks</span> 
-        <span class="text-gray-400">like useState and useEffect</span>
-      </button>
-    </div>
-
-    <!-- Message input -->
-    <div class="relative">
-      <input 
-        type="text" 
-        placeholder="Send a message..." 
-        class="w-full bg-[#1a1a1a] text-gray-200 placeholder-gray-500 rounded-full py-3 px-4 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      <h3 class="font-roboto-Mono">Hello! How can I help?</h3>
+      <!-- Scrollable transcript surface -->
+       <br>
+       <br>
+       <br>
+      <div id="chat"></div>
+      <!-- Message composer and attachment controls -->
+      <div class="group">
+        <div class="container-ia-chat">
+  <input
+    type="checkbox"
+    name="input-voice"
+    id="input-voice"
+    class="input-voice"
+    style="display:none"
+  />
+  <input
+    type="text"
+    name="input-text"
+    id="input-text"
+    placeholder="Ask Anything..."
+    class="input-text"
+    required=""
+    title=""
+  />
+  <input
+    type="checkbox"
+    name="input-files"
+    id="input-files"
+    class="input-files"
+    style="display:none"
+  />
+  <div class="container-upload-files">
+    <svg
+      class="upload-file"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <g
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
       >
-    </div>
-
+        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+        <circle cx="9" cy="9" r="2"></circle>
+        <path d="m21 15l-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+      </g>
+    </svg>
+    <svg
+      class="upload-file"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="m6 14l1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"
+      ></path>
+    </svg>
   </div>
+  <label for="input-files" class="label-files">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M5 12h14m-7-7v14"
+      ></path>
+    </svg>
+  </label>
+        </div>
+      </div>
+    </div>
+  </div>
+<div id="iframePopup" class="iframe-popup">
+  <div class="iframe-content">
+    <iframe id="iframeBox" src="" frameborder="0"></iframe>
+  </div>
+</div>
+<div>
+<br>
+</div>
+  <br>
+  <!-- Legacy error banner retained for debugging
+  <!-- <div class="error-alert">
+    <p class="alert-content">
+      <svg
+        stroke="currentColor"
+        fill="none"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        height="28"
+        width="28"
+        class="icon-lg"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"
+        ></path>
+        <path d="M12 9v4"></path>
+        <path d="M12 17h.01"></path>
+      </svg>
+    <small><small>Servers are slow right now!<br>
+    There is a limited amount of servers to respond to requests, so response time may be slow.</small></small>
+    </p>
+  </div> -->
+
+<!-- Random greeting rotation for hero tagline -->
+<script>
+const messages = [
+"Hello!",
+"Hi there!",
+"Greetings!",
+"Welcome back!",
+"Good to see you!",
+"Glad you are here.",
+"Hello, welcome!",
+"Nice to see you again.",
+"wsp",
+"Hi, welcome!",
+"Hello and welcome!",
+"Welcome!",
+"Hello, nice to see you.",
+"Good to have you back.",
+"Hi, good to see you.",
+"Hello, glad to see you.",
+"six seven",
+];
+
+
+const greeting = document.querySelector("h3.font-roboto-Mono");
+let lastIndex = -1; // remember the last message
+
+function setRandomGreeting() {
+  let randomIndex;
+  do {
+    randomIndex = Math.floor(Math.random() * messages.length);
+  } while (randomIndex === lastIndex); // make sure it's different
+  lastIndex = randomIndex;
+  greeting.textContent = messages[randomIndex];
+}
+
+// Set one random message on load
+setRandomGreeting();
+</script>
+
+  <br>
+          <!-- Legacy chat input markup retained for reference -->
+          <!-- <input type="text" id="input" placeholder="Message..."> -->
+
+        <!-- <div class="group">
+    
+  <input required="" type="text" class="input">
+  <span class="highlight"></span>
+  <span class="bar"></span>
+  <label>Chat</label>
+</div> -->
+
+</div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- <div>
+        <div style="text-align: right;">
+        
+            <div class="dropdown">
+              <button onclick="myFunction()" class="userbutton"><img src="/logos/logo/user.png" height="20px" width="20px"></button>
+              <div style="text-align: left;">
+              <div id="myDropdown" class="dropdown-content">
+                <a href="settings.htm">Settings</a>
+                <a href="https://syvaai.com/donate.html" style="color:rgb(3, 104, 3);">Donate</a>
+              </div>
+            </div>
+            </div>
+        
+
+          <button onclick="myFunction2()" id="dark-toggle" class="darkmode"><img src="/logos/logo/day-and-night.png" height="20px" width="20px"></button>
+          <button onclick="myFunction3()" id="toggleChatsBtn" class="menubut"><img src="logos/logo/menu.png" height="20px" width="20px"></button>
+        </div>
+
+            
+          
+        <br>
+        <h3 class="font-roboto-Mono" >Hello! How can I help?</h3>
+        <div class="text-align: center">
+        <div id="chat"></div>
+        </div>
+        <input type="text" id="input" placeholder="Message...">
+        <br>
+    </div> -->
+  <!-- Sidebar container populated with previous conversations -->
   <div id="chatsText" class="hidden text-left">
   <div class="login-containertwo">
     <small><p style="color:gray;" class="text-left">Chats</p></small>
