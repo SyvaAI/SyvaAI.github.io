@@ -1628,52 +1628,67 @@ h2 {
 }
 
 
-.iframe-overlay {
+.iframe-center-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
   z-index: 9999;
-  animation: fadeIn 0.2s ease-in;
 }
 
-.iframe-header {
+.iframe-center-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.iframe-center-box {
+  width: 80%;
+  max-width: 900px;
+  height: 70%;
+  background: rgba(30, 30, 30, 0.9);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.95);
+  transition: transform 0.25s ease;
+}
+
+.iframe-center-overlay.visible .iframe-center-box {
+  transform: scale(1);
+}
+
+.iframe-center-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(20, 20, 20, 0.9);
-  color: white;
-  padding: 0.5rem 1rem;
+  background: rgba(255,255,255,0.05);
+  padding: 0.4rem 0.8rem;
   border-bottom: 1px solid rgba(255,255,255,0.1);
-  font-family: sans-serif;
 }
 
-.iframe-overlay iframe {
-  flex: 1;
-  width: 100%;
-  border: none;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  background: #fff;
-  border-radius: 0 0 12px 12px;
-}
-
-.close-btn {
+.iframe-close {
   background: none;
-  color: white;
   border: none;
-  font-size: 1.5rem;
   cursor: pointer;
   transition: opacity 0.2s;
 }
-.close-btn:hover { opacity: 0.7; }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.iframe-close:hover { opacity: 0.7; }
+
+.iframe-center-box iframe {
+  flex: 1;
+  border: none;
+  border-radius: 0 0 16px 16px;
+  background: #fff;
 }
-
 
     </style>
 
@@ -1773,35 +1788,49 @@ h2 {
 
 <script>
 function openIframe(url) {
-  // create overlay container
-  const iframeContainer = document.createElement("div");
-  iframeContainer.classList.add("iframe-overlay");
-  iframeContainer.innerHTML = `
-    <div class="iframe-header">
-      <button id="closeIframe" class="close-btn">×</button>
-      <span class="iframe-url">${url}</span>
+  // create overlay
+  const overlay = document.createElement("div");
+  overlay.classList.add("iframe-center-overlay");
+
+  // iframe box
+  const box = document.createElement("div");
+  box.classList.add("iframe-center-box");
+  box.innerHTML = `
+    <div class="iframe-center-header">
+      <span class="iframe-title">Embedded content</span>
+      <button class="iframe-close menubut">
+        <img src="/logos/logo/arrow.png" height="20" width="20" alt="close">
+      </button>
     </div>
-    <iframe src="${url}" frameborder="0" allowfullscreen></iframe>
+    <iframe src="${url}" loading="lazy" frameborder="0" allowfullscreen></iframe>
   `;
 
-  document.body.appendChild(iframeContainer);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
 
-  // close overlay function
-  function closeOverlay() {
-    iframeContainer.classList.add("fade-out");
-    setTimeout(() => iframeContainer.remove(), 250);
+  // fade-in
+  setTimeout(() => overlay.classList.add("visible"), 10);
+
+  // close logic
+  function closeIframe() {
+    overlay.classList.remove("visible");
+    setTimeout(() => overlay.remove(), 250);
     window.removeEventListener("message", onMessage);
   }
 
-  // manual close button
-  document.getElementById("closeIframe").addEventListener("click", closeOverlay);
+  // click outside = close
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeIframe();
+  });
 
-  // message-based closing (from inside iframe)
+  // close button
+  box.querySelector(".iframe-close").addEventListener("click", closeIframe);
+
+  // message listener
   function onMessage(event) {
-    // you can restrict origin for security if you know it, e.g.:
-    // if (event.origin !== "https://www.gofundme.com") return;
-    if (typeof event.data === "string" && event.data.toLowerCase().includes("closeiframe")) {
-      closeOverlay();
+    // optionally restrict by origin: if (event.origin !== "https://syvaai.com") return;
+    if (typeof event.data === "string" && event.data.toLowerCase().includes("close-iframe")) {
+      closeIframe();
     }
   }
 
