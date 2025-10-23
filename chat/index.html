@@ -1629,16 +1629,258 @@ h2 {
   }
 }
 
+/* --- Root Container for Positioning --- */
+.aui-modal-anchor-container {
+  /* fixed right-4 bottom-4 size-11 */
+  position: fixed;
+  right: 1rem; /* Adjust padding as needed */
+  bottom: 1rem; /* Adjust padding as needed */
+  width: 2.75rem; /* size-11 (44px) */
+  height: 2.75rem; /* size-11 (44px) */
+  z-index: 1000; /* Ensure it floats above other content */
+}
 
+/* --- Primary Button Styles --- */
+.aui-modal-button {
+  /* Default Colors (Tailwind bg-primary text-primary-foreground) */
+  --primary-color: #4f46e5; /* Example: Indigo-600 */
+  --primary-foreground: #ffffff; 
+  
+  /* Shared Button Properties */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem; /* p-1 */
+  width: 100%; /* size-full */
+  height: 100%; /* size-full */
+  
+  /* Appearance */
+  border: none;
+  border-radius: 9999px; /* rounded-full */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow (a medium shadow) */
+  background-color: var(--primary-color);
+  color: var(--primary-foreground);
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  font-weight: 500; /* font-medium */
+  cursor: pointer;
+
+  /* Transitions and Hover Effects */
+  transition: transform 0.2s ease, background-color 0.1s; /* transition-transform duration-200 */
+  
+  /* hover:bg-primary/90 */
+  opacity: 1; /* For disabled states */
+}
+
+.aui-modal-button:hover {
+  /* hover:scale-110 */
+  transform: scale(1.1);
+  /* A lighter shade for hover effect */
+  background-color: color-mix(in srgb, var(--primary-color), black 10%); 
+}
+
+.aui-modal-button:active {
+  /* active:scale-90 */
+  transform: scale(0.9);
+}
+
+/* --- Icon Styles and Animations --- */
+.aui-modal-icon {
+  /* absolute size-6 */
+  position: absolute;
+  width: 1.5rem; /* size-6 (24px) */
+  height: 1.5rem; /* size-6 (24px) */
+  
+  /* transition-all */
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* State management for CLOSED icon (Bot icon) */
+.aui-modal-button-closed-icon[data-state="closed"] {
+  /* data-[state=closed]:scale-100 data-[state=closed]:rotate-0 */
+  transform: scale(1) rotate(0deg);
+  opacity: 1;
+}
+
+.aui-modal-button-closed-icon[data-state="open"] {
+  /* data-[state=open]:scale-0 data-[state=open]:rotate-90 */
+  transform: scale(0) rotate(90deg);
+  opacity: 0;
+}
+
+/* State management for OPEN icon (Close/Chevron icon) */
+.aui-modal-button-open-icon[data-state="closed"] {
+  /* data-[state=closed]:scale-0 data-[state=closed]:-rotate-90 */
+  transform: scale(0) rotate(-90deg);
+  opacity: 0;
+}
+
+.aui-modal-button-open-icon[data-state="open"] {
+  /* data-[state=open]:scale-100 data-[state=open]:rotate-0 */
+  transform: scale(1) rotate(0deg);
+  opacity: 1;
+}
+
+/* Visually hidden text for accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+
+/* ================================================= */
+/* 1. MODAL WRAPPER (Full screen overlay)            */
+/* ================================================= */
+#chatbot-modal-wrapper {
+  /* Fixes it to the screen and covers the whole viewport */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Use a semi-transparent dark background for the overlay effect */
+  background-color: rgba(0, 0, 0, 0.4); 
+  z-index: 999; /* Below the floating button (1000) but above everything else */
+  
+  /* Centering the chat box/card inside the modal */
+  display: flex;
+  align-items: center; /* Vertically center */
+  justify-content: center; /* Horizontally center */
+  
+  /* Initial hidden state */
+  opacity: 1; /* Start visible for easy testing, use 0 and transition later */
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+/* Class to visually hide the modal */
+.chatbot-modal.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  /* The transform is key for a nice transition/slide-in effect */
+  transform: translateY(10px); 
+}
+
+/* Class to show the modal (for JS toggling) */
+.chatbot-modal.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* ================================================= */
+/* 2. CHAT CARD CONTAINER (.card-inner)              */
+/* ================================================= */
+.card-inner {
+  /* Your existing inner card, now styled as a modern chat modal */
+  display: flex;
+  flex-direction: column;
+  
+  /* Size and shape for desktop */
+  width: 90%;
+  max-width: 450px; /* Max width for a typical sidebar/modal look */
+  height: 90%;
+  max-height: 600px; /* Max height to prevent it from taking the whole screen */
+  
+  /* Appearance */
+  background-color: white; /* Or your preferred card background color */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Soft, prominent shadow */
+  overflow: hidden; /* Keeps the content within the rounded corners */
+}
+
+/* ================================================= */
+/* 3. RESPONSIVENESS (Full screen on mobile)         */
+/* ================================================= */
+@media (max-width: 600px) {
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    border-radius: 0; /* Full screen, no rounded corners */
+  }
+}
+
+/* ================================================= */
+/* 4. CONTENT LAYOUT (Based on your existing HTML)   */
+/* ================================================= */
+
+/* Ensure the chat-shell uses flexbox to manage vertical space */
+.chat-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem; /* Add padding around the content */
+}
+
+/* Make the transcript area scrollable and take up available space */
+#chat {
+    flex-grow: 1; /* Allows it to fill the vertical space */
+    overflow-y: auto; /* Makes the chat history scrollable */
+    padding: 0 0.5rem; /* Inner padding */
+}
+
+/* Minor adjustments for the input group to stick to the bottom */
+.group {
+    /* Ensures the composer is below the chat, not inline */
+    margin-top: auto; 
+    padding-top: 1rem;
+}
     </style>
 
+    <div class="aui-modal-anchor-container">
+  <button 
+    id="chatbot-modal-button"
+    type="button" 
+    aria-haspopup="dialog" 
+    aria-expanded="false" 
+    data-state="closed" 
+    aria-controls="your-actual-modal-id"
+    class="aui-modal-button"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aui-modal-icon aui-modal-button-closed-icon" data-state="closed">
+      <path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aui-modal-icon aui-modal-button-open-icon" data-state="closed">
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+    <span class="sr-only">Open Assistant</span>
+  </button>
+</div>
 
+<div class="aui-modal-anchor-container">
+  <button 
+    id="chatbot-modal-button"
+    type="button" 
+    aria-haspopup="dialog" 
+    aria-expanded="false" 
+    data-state="closed" 
+    aria-controls="chatbot-modal-wrapper"
+    class="aui-modal-button"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aui-modal-icon aui-modal-button-closed-icon" data-state="closed">
+      <path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aui-modal-icon aui-modal-button-open-icon" data-state="closed">
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+    <span class="sr-only">Open Assistant</span>
+  </button>
+</div>
 
-  <div class="card-overlay"></div>
-  <div class="card-inner">
-    <!-- Chat layout container keeps toolbar, transcript, and composer aligned -->
+<div id="chatbot-modal-wrapper" class="chatbot-modal is-hidden">
+  
+  <div class="card-inner"> 
+    
     <div class="chat-shell">
-      <!-- Action toolbar: profile, theme toggle, conversation menu -->
       <div class="chat-toolbar">
         <div class="dropdown">
           <button onclick="myFunction()" class="userbutton"><img src="/logos/logo/user.png" height="20px" width="20px"></button>
@@ -1652,132 +1894,112 @@ h2 {
         <button onclick="myFunction3()" id="toggleChatsBtn" class="menubut"><img src="/logos/logo/menu.png" height="20px" width="20px"></button>
         <button onclick="startNewChat()" id="toggleChatsBtn" class="menubut"><img src="/logos/logo/newchat.png" height="20px" width="20px"></button>
       </div>
+      
       <h3 class="font-roboto-Mono">Hello! How can I help?</h3>
-      <!-- Scrollable transcript surface -->
-       <br>
+      
+      <br>
        <br>
        <br>
       <div id="chat"></div>
-      <!-- Message composer and attachment controls -->
+      
       <div class="group">
         <div class="container-ia-chat">
-  <input
-    type="checkbox"
-    name="input-voice"
-    id="input-voice"
-    class="input-voice"
-    style="display:none"
-  />
-  <input
-    type="text"
-    name="input-text"
-    id="input-text"
-    placeholder="Ask Anything..."
-    class="input-text"
-    required=""
-    title=""
-  />
-  <input
-    type="checkbox"
-    name="input-files"
-    id="input-files"
-    class="input-files"
-    style="display:none"
-  />
-  <div class="container-upload-files">
-    <svg
-      class="upload-file"
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-    >
-      <g
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-      >
-        <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
-        <circle cx="9" cy="9" r="2"></circle>
-        <path d="m21 15l-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
-      </g>
-    </svg>
-    <svg
-      class="upload-file"
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-    >
-      <path
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="m6 14l1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"
-      ></path>
-    </svg>
-  </div>
-  <label for="input-files" class="label-files">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-    >
-      <path
-        fill="none"
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M5 12h14m-7-7v14"
-      ></path>
-    </svg>
-  </label>
+          <input
+            type="checkbox"
+            name="input-voice"
+            id="input-voice"
+            class="input-voice"
+            style="display:none"
+          />
+          <input
+            type="text"
+            name="input-text"
+            id="input-text"
+            placeholder="Ask Anything..."
+            class="input-text"
+            required=""
+            title=""
+          />
+          <input
+            type="checkbox"
+            name="input-files"
+            id="input-files"
+            class="input-files"
+            style="display:none"
+          />
+          <div class="container-upload-files">
+            <svg
+              class="upload-file"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <g
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              >
+                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                <circle cx="9" cy="9" r="2"></circle>
+                <path d="m21 15l-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+              </g>
+            </svg>
+            <svg
+              class="upload-file"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m6 14l1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"
+              ></path>
+            </svg>
+          </div>
+          <label for="input-files" class="label-files">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 12h14m-7-7v14"
+              ></path>
+            </svg>
+          </label>
         </div>
       </div>
     </div>
   </div>
-<div id="iframePopup" class="iframe-popup">
-  <div class="iframe-content">
-    <iframe id="iframeBox" src="" frameborder="0"></iframe>
-  </div>
-</div>
-<div>
-<br>
-</div>
-  <br>
-  <!-- Legacy error banner retained for debugging
-  <!-- <div class="error-alert">
-    <p class="alert-content">
-      <svg
-        stroke="currentColor"
-        fill="none"
-        stroke-width="2"
-        viewBox="0 0 24 24"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        height="28"
-        width="28"
-        class="icon-lg"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"
-        ></path>
-        <path d="M12 9v4"></path>
-        <path d="M12 17h.01"></path>
-      </svg>
-    <small><small>Servers are slow right now!<br>
-    There is a limited amount of servers to respond to requests, so response time may be slow.</small></small>
-    </p>
-  </div> -->
 
-<!-- Random greeting rotation for hero tagline -->
+  <div id="iframePopup" class="iframe-popup">
+    <div class="iframe-content">
+      <iframe id="iframeBox" src="" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <div id="chatsText" class="hidden text-left">
+    <div class="login-containertwo">
+      <small><p style="color:gray;" class="text-left">Chats</p></small>
+    </div>
+  </div>
+
+</div>
+
 <script>
 const messages = [
 "Hello!",
@@ -1799,15 +2021,14 @@ const messages = [
 "six seven",
 ];
 
-
 const greeting = document.querySelector("h3.font-roboto-Mono");
-let lastIndex = -1; // remember the last message
+let lastIndex = -1; 
 
 function setRandomGreeting() {
   let randomIndex;
   do {
     randomIndex = Math.floor(Math.random() * messages.length);
-  } while (randomIndex === lastIndex); // make sure it's different
+  } while (randomIndex === lastIndex); 
   lastIndex = randomIndex;
   greeting.textContent = messages[randomIndex];
 }
@@ -1815,81 +2036,6 @@ function setRandomGreeting() {
 // Set one random message on load
 setRandomGreeting();
 </script>
-
-  <br>
-          <!-- Legacy chat input markup retained for reference -->
-          <!-- <input type="text" id="input" placeholder="Message..."> -->
-
-        <!-- <div class="group">
-    
-  <input required="" type="text" class="input">
-  <span class="highlight"></span>
-  <span class="bar"></span>
-  <label>Chat</label>
-</div> -->
-
-</div>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- <div>
-        <div style="text-align: right;">
-        
-            <div class="dropdown">
-              <button onclick="myFunction()" class="userbutton"><img src="/logos/logo/user.png" height="20px" width="20px"></button>
-              <div style="text-align: left;">
-              <div id="myDropdown" class="dropdown-content">
-                <a href="settings.htm">Settings</a>
-                <a href="https://syvaai.com/donate.html" style="color:rgb(3, 104, 3);">Donate</a>
-              </div>
-            </div>
-            </div>
-        
-
-          <button onclick="myFunction2()" id="dark-toggle" class="darkmode"><img src="/logos/logo/day-and-night.png" height="20px" width="20px"></button>
-          <button onclick="myFunction3()" id="toggleChatsBtn" class="menubut"><img src="logos/logo/menu.png" height="20px" width="20px"></button>
-        </div>
-
-            
-          
-        <br>
-        <h3 class="font-roboto-Mono" >Hello! How can I help?</h3>
-        <div class="text-align: center">
-        <div id="chat"></div>
-        </div>
-        <input type="text" id="input" placeholder="Message...">
-        <br>
-    </div> -->
-  <!-- Sidebar container populated with previous conversations -->
-  <div id="chatsText" class="hidden text-left">
-  <div class="login-containertwo">
-    <small><p style="color:gray;" class="text-left">Chats</p></small>
-  </div>
-</div>
 
 
   <!-- Legacy cookie popup markup retained for reference
