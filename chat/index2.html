@@ -1766,7 +1766,8 @@ h2 {
 </script>
 
 <script>
-  function openIframe(url) {
+function openIframe(url) {
+  // create overlay container
   const iframeContainer = document.createElement("div");
   iframeContainer.classList.add("iframe-overlay");
   iframeContainer.innerHTML = `
@@ -1779,11 +1780,26 @@ h2 {
 
   document.body.appendChild(iframeContainer);
 
-  // close handler
-  document.getElementById("closeIframe").addEventListener("click", () => {
+  // close overlay function
+  function closeOverlay() {
     iframeContainer.classList.add("fade-out");
-    setTimeout(() => iframeContainer.remove(), 300);
-  });
+    setTimeout(() => iframeContainer.remove(), 250);
+    window.removeEventListener("message", onMessage);
+  }
+
+  // manual close button
+  document.getElementById("closeIframe").addEventListener("click", closeOverlay);
+
+  // message-based closing (from inside iframe)
+  function onMessage(event) {
+    // you can restrict origin for security if you know it, e.g.:
+    // if (event.origin !== "https://www.gofundme.com") return;
+    if (typeof event.data === "string" && event.data.toLowerCase().includes("closeiframe")) {
+      closeOverlay();
+    }
+  }
+
+  window.addEventListener("message", onMessage);
 }
 
 </script>
