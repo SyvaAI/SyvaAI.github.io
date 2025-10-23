@@ -1834,6 +1834,177 @@ h2 {
     margin-top: auto; 
     padding-top: 1rem;
 }
+
+/* Custom CSS Variables (Define these at the top of your main stylesheet) */
+:root {
+  --primary-color: #4f46e5;      /* e.g., a strong blue or indigo */
+  --primary-foreground: #ffffff;
+  --background-color: #f7f7f8;   /* Light gray/off-white background */
+  --card-background: #ffffff;    /* Pure white for the chat card */
+  --border-color: #e5e7eb;       /* Light border color */
+  --text-color: #1f2937;         /* Dark gray text */
+  --muted-text-color: #6b7280;   /* Gray for secondary text */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* ================================================= */
+/* 1. CHAT CARD & SHELL STYLES                       */
+/* ================================================= */
+
+/* Redefining your card appearance for a cleaner look */
+.card-inner {
+  background-color: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Modern shadow */
+  overflow: hidden;
+  /* (Keep the flex/size properties from the Modal Wrapper CSS) */
+}
+
+/* Ensure padding is consistent and internal elements are managed */
+.chat-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0; /* Remove padding here; apply to specific components */
+}
+
+/* ================================================= */
+/* 2. TOOLBAR (Cleaner header style)                 */
+/* ================================================= */
+
+.chat-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem; /* Padding top/bottom and left/right */
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--card-background); /* White header background */
+}
+
+/* General button cleanup in toolbar */
+.chat-toolbar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-left: 0.25rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.chat-toolbar button:hover {
+  background-color: var(--background-color);
+}
+
+/* Styling for the drop-down trigger button */
+.userbutton {
+  /* Resetting image size to be more uniform */
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin-right: auto; /* Pushes other buttons to the right */
+}
+
+.userbutton img,
+.darkmode img,
+.menubut img {
+    /* Standardize all icons for a uniform appearance */
+    width: 20px;
+    height: 20px;
+    filter: invert(var(--icon-filter, 0)); /* For dark mode support */
+}
+
+/* Header/Greeting */
+.font-roboto-Mono {
+  padding: 1rem 1.5rem 0;
+  margin-top: 0;
+  color: var(--text-color);
+  font-weight: 600; /* Slightly bolder */
+  font-size: 1.125rem;
+}
+
+/* ================================================= */
+/* 3. CHAT TRANSCRIPT AREA (The scrollable part)     */
+/* ================================================= */
+
+#chat {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 0 1.5rem; /* Consistent side padding */
+  margin-bottom: 0.5rem; /* Space above input */
+}
+
+/* ================================================= */
+/* 4. COMPOSER/INPUT AREA                            */
+/* ================================================= */
+
+/* Outer container for the input/send group */
+.group {
+  padding: 1rem 1.5rem 1.5rem; /* Padding around the input area */
+  border-top: 1px solid var(--border-color);
+  background-color: var(--card-background);
+}
+
+.container-ia-chat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Space between input and buttons/labels */
+  border: 1px solid var(--border-color);
+  border-radius: 24px; /* Rounded pill shape for the whole composer */
+  padding: 0.5rem;
+  background-color: var(--background-color); /* Light background for the input area itself */
+}
+
+/* Text Input Field */
+.input-text {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  background: none;
+  padding: 0.5rem 0.5rem;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+/* File/Attachment Icons */
+.container-upload-files {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.upload-file {
+  width: 20px;
+  height: 20px;
+  color: var(--muted-text-color);
+  cursor: pointer;
+}
+
+/* Send Button Label (The plus icon) */
+.label-files {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: var(--primary-color);
+  color: var(--primary-foreground);
+  border-radius: 50%; /* Perfect circle */
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0; /* Prevents it from shrinking */
+}
+
+.label-files:hover {
+  background-color: color-mix(in srgb, var(--primary-color), black 10%);
+}
+
+.label-files svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5; /* Slightly bolder icon stroke */
+}
+
+/* Final Note: You must integrate this with your specific Dark Mode logic. */
+/* If you use a class like 'dark' on the body, you'll need a @media (prefers-color-scheme: dark) or a .dark selector to invert these colors. */
     </style>
 
     <div class="aui-modal-anchor-container">
