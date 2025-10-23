@@ -168,5 +168,491 @@ if (!firebase.apps.length) {
     </div>
 
   </div>
+
+
+  <script>
+  if (localStorage.getItem(DARK_MODE_KEY) === 'true') {
+    enableDarkMode();
+  }
+
+  toggle.addEventListener('click', () => {
+    if (body.classList.contains('dark-mode')) {
+      disableDarkMode();
+    } else {
+      enableDarkMode();
+    }
+  });
+
+  function enableDarkMode() {
+    body.classList.add('dark-mode');
+    if (cardOverlay) cardOverlay.classList.add('dark');
+    if (cardInner) cardInner.classList.add('dark');
+    localStorage.setItem(DARK_MODE_KEY, 'true');
+  }
+
+  function disableDarkMode() {
+    body.classList.remove('dark-mode');
+    if (cardOverlay) cardOverlay.classList.remove('dark');
+    if (cardInner) cardInner.classList.remove('dark');
+    localStorage.setItem(DARK_MODE_KEY, 'false');
+  }
+</script>
+
+
+
+
+<script>
+  const toggle = document.getElementById('dark-toggle');
+  const body = document.body;
+  const DARK_MODE_KEY = 'darkMode';
+
+  // Select card elements
+  const card = document.querySelector('.card');
+  const cardOverlay = document.querySelector('.card-overlay');
+  const cardInner = document.querySelector('.card-inner');
+
+  // Load saved mode
+  if (localStorage.getItem(DARK_MODE_KEY) === 'true') {
+    enableDarkMode();
+  }
+
+  toggle.addEventListener('click', () => {
+    if (body.classList.contains('dark-mode')) {
+      disableDarkMode();
+    } else {
+      enableDarkMode();
+    }
+  });
+
+  function enableDarkMode() {
+    body.classList.add('dark-mode');
+    card.classList.add('dark');
+    cardOverlay.classList.add('dark');
+    cardInner.classList.add('dark');
+    localStorage.setItem(DARK_MODE_KEY, 'true');
+  }
+
+  function disableDarkMode() {
+    body.classList.remove('dark-mode');
+    card.classList.remove('dark');
+    cardOverlay.classList.remove('dark');
+    cardInner.classList.remove('dark');
+    localStorage.setItem(DARK_MODE_KEY, 'false');
+  }
+</script>
+
+
+
+
+
+          <!-- Dropdown menu visibility management -->
+          <script>
+ // ADD THIS AT THE TOP - Track session ID
+let currentSessionId = null;
+
+initializeChat();
+
+function initializeChat() {
+  const input = document.getElementById('input');
+  input.addEventListener("keyup", (e) => {
+    if (e.key === "Enter" && input.value.trim()) {
+      sendMessage(input.value.trim());
+      input.value = "";
+    }
+  });
+}
+
+async function sendMessage(message) {
+  appendMessage("User", message);
+
+  const chat = document.getElementById('chat');
+
+// Create AI message with main loader
+const loaderDiv = document.createElement('div');
+loaderDiv.classList.add('message', 'message-ai');
+loaderDiv.innerHTML = `<div class="spinner"></div>`;
+chat.appendChild(loaderDiv);
+chat.scrollTop = chat.scrollHeight;
+
+// ⏳ Create the second (slow) spinner — hidden at first
+const slowSpinner = document.createElement('div');
+slowSpinner.classList.add('slow-spinner');
+slowSpinner.innerHTML = `<p><small><small><small>SyväAI is thinking longer for a better answer...</small></small></p>`;
+slowSpinner.style.display = "none"; // start hidden
+loaderDiv.appendChild(slowSpinner);
+
+  const startTime = Date.now();
+
+  // Start 10s timer for the slow spinner
+  const slowTimer = setTimeout(() => {
+    slowSpinner.style.display = 'block';
+  }, 10000); // 10 seconds
+
+  try {
+    const response = await fetch('https://api.syvaai.com/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        question: message, 
+        top_k: 2,
+        session_id: currentSessionId  // ← ADDED: Send session ID
+      })
+    });
+
+    clearTimeout(slowTimer); // stop showing slow spinner if done
+    slowSpinner.style.display = 'none';
+
+    const data = await response.json();
+    
+    // ← ADDED: Save the session ID for next message
+    if (data.session_id) {
+      currentSessionId = data.session_id;
+    }
+    
+    const aiMessage = data.answer ?? data.response ?? `<div class="error-alert">
+    <p class="alert-content">
+      <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
+        stroke-linecap="round" stroke-linejoin="round" height="28" width="28"
+        class="icon-lg" xmlns="http://www.w3.org/2000/svg">
+        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+        <path d="M12 9v4"></path>
+        <path d="M12 17h.01"></path>
+      </svg>
+      <small><small>API Error<hr>
+      A error occured. (Error code 76)<hr>
+      <a href="https://syvaai.zohodesk.com/portal/en/kb/articles/error-76"><u>Click here</u></a>
+      for a explanation for this error.</small></small>
+    </p></div>`;
+
+    // Ensure loader shows at least 1 second
+    const elapsed = Date.now() - startTime;
+    const delay = Math.max(0, 1000 - elapsed);
+
+    setTimeout(() => {
+      loaderDiv.innerHTML = aiMessage;
+      chat.scrollTop = chat.scrollHeight;
+
+            // ADD THIS BLOCK HERE ⬇️⬇️⬇️
+      saveMessageToFirebase(message, aiMessage);
+
+
+    }, delay);
+
+  } catch (error) {
+    console.error("API Error:", error);
+
+    clearTimeout(slowTimer);
+    slowSpinner.style.display = 'none';
+
+    const elapsed = Date.now() - startTime;
+    const delay = Math.max(0, 1000 - elapsed);
+
+    setTimeout(() => {
+      loaderDiv.innerHTML = `<div class="error-alert">
+      <p class="alert-content">
+        <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
+          stroke-linecap="round" stroke-linejoin="round" height="28" width="28"
+          class="icon-lg" xmlns="http://www.w3.org/2000/svg">
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+          <path d="M12 9v4"></path>
+          <path d="M12 17h.01"></path>
+        </svg>
+        <small><small>API Error<hr>
+        A error occured. (Error code 67)<hr>
+        <a href="https://syvaai.zohodesk.com/portal/en/kb/articles/error-67"><u>Click here</u></a>
+        for a explanation for this error.</small></small>
+      </p></div>`;
+      chat.scrollTop = chat.scrollHeight;
+    }, delay);
+  }
+}
+
+function appendMessage(sender, message) {
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('message');
+  messageDiv.classList.add(sender === 'User' ? 'message-user' : 'message-ai');
+  messageDiv.innerHTML = `${message}`;
+  const chat = document.getElementById('chat');
+  chat.appendChild(messageDiv);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function changeContent2() {
+  alert("Coming soon!");
+}
+
+function openNav() {
+  document.getElementById("mySidenav").style.width = "100%";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+async function startNewChat() {
+  // Create a brand new chat
+  const chatId = 'chat_' + Date.now();
+  chatSessions[chatId] = {
+    id: chatId,
+    title: 'New Chat',
+    messages: [],
+    sessionId: null,
+    created: Date.now(),
+    lastUpdated: Date.now()
+  };
+  
+  activeChatId = chatId;
+  currentSessionId = null;
+  document.getElementById('chat').innerHTML = '';
+  
+  // Save to Firebase
+  const user = firebase.auth().currentUser;
+  if (user && db) {
+    await db.collection('users').doc(user.uid).collection('chats').doc(chatId).set(chatSessions[chatId]);
+  }
+  
+  renderChatList();
+  console.log("Started new conversation:", chatId);
+}
+
+          </script>
+          <!-- Popup reminder visibility persistence -->
+          <script>
+  // Grab the text input
+  const inputText = document.getElementById('input-text');
+
+  // Make it respond to Enter key
+  inputText.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter' && inputText.value.trim()) {
+      sendMessage(inputText.value.trim());
+      inputText.value = ""; // clear input after sending
+    }
+  });
+
+  // Reuse your existing sendMessage() and appendMessage() functions
+</script>
+
+          <script>
+            // Select the button and the "Chats" section
+            const toggleChatsBtn = document.getElementById("toggleChatsBtn");
+            const chatsText = document.getElementById("chatsText");
+          
+            // Event listener to toggle the visibility of the "Chats" section
+            toggleChatsBtn.addEventListener("click", function() {
+              chatsText.classList.toggle("hidden");
+            });
+          </script>
+          
+          <script>
+            function myFunction() {
+              var dropdown = document.getElementById("myDropdown");
+              if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+              } else {
+                dropdown.style.display = "block";
+              }
+            }
+            
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function(event) {
+              if (!event.target.closest('.dropdown')) {
+                var dropdown = document.getElementById("myDropdown");
+                dropdown.style.display = "none";
+              }
+            }
+            </script>
+            
+          <script>
+  window.onload = function () {
+    // Check if the user already closed the popup
+    const hasClosedPopup = localStorage.getItem('popupClosed');
+    const popup = document.getElementById('popup');
+
+    // Only show the popup if it hasn't been closed before
+    if (!hasClosedPopup) {
+      setTimeout(function () {
+        popup.style.display = 'block'; // Make it block so it occupies space
+        setTimeout(function () {
+          popup.style.opacity = '1'; // Fade in
+        }, 10); // Slight delay to trigger CSS transition
+      }, 1000);
+    }
+
+    // Attach close event to the button
+    const closeBtn = document.getElementById('close-btn');
+    closeBtn.onclick = function () {
+      popup.style.opacity = '0'; // Fade out
+      setTimeout(function () {
+        popup.style.display = 'none';
+        localStorage.setItem('popupClosed', 'true'); // Remember user closed popup
+      }, 500);
+    };
+  };
+
+  async function deleteChat(chatId, event) {
+  event.stopPropagation();
+  
+  if (!confirm('Delete this chat?')) return;
+  
+  const user = firebase.auth().currentUser;
+  
+  // Delete from Firebase
+  if (user && db) {
+    try {
+      await db.collection('users').doc(user.uid).collection('chats').doc(chatId).delete();
+      console.log('Deleted from Firebase:', chatId);
+    } catch (e) {
+      console.error('Error deleting:', e);
+    }
+  }
+  
+  // Delete locally
+  delete chatSessions[chatId];
+  
+  // If we deleted the active chat, start a new one
+  if (activeChatId === chatId) {
+    await startNewChat();
+  } else {
+    renderChatList();
+  }
+}
+  </script>
+  <!-- Persistent chat history synchronization -->
+  <script>
+// Firebase chat list only
+let chatSessions = {};
+let activeChatId = null;
+let db;
+
+setTimeout(() => {
+  if (firebase && firebase.firestore) {
+    db = firebase.firestore();
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        loadChatsFromFirebase(user.uid);
+      }
+    });
+  }
+}, 1000);
+
+async function loadChatsFromFirebase(userId) {
+  if (!db) return;
+  try {
+    const snapshot = await db.collection('users').doc(userId).collection('chats').orderBy('lastUpdated', 'desc').get();
+    chatSessions = {};
+    snapshot.forEach(doc => chatSessions[doc.id] = doc.data());
+    renderChatList();
+  } catch (e) {
+    console.error('Error loading chats:', e);
+  }
+}
+
+function renderChatList() {
+  const container = document.getElementById('chatsText');
+  if (!container) return;
+  
+  const chatIds = Object.keys(chatSessions);
+  if (chatIds.length === 0) {
+    container.innerHTML = '<div class="login-containertwo"><small><p style="color:gray;">No chats yet</p></small></div>';
+    return;
+  }
+  
+  let html = '<div class="login-containertwo"><small><p style="color:gray;">Chats</p></small></div>';
+  
+  chatIds.forEach(chatId => {
+    const chat = chatSessions[chatId];
+    const title = chat.title || 'New Chat';
+    const isActive = chatId === activeChatId;
+    
+    html += `
+      <div style="
+        padding: 10px;
+        margin: 8px;
+        background: ${isActive ? 'rgba(100,100,255,0.2)' : 'rgba(255,255,255,0.1)'};
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      ">
+        <div onclick="loadChatFromList('${chatId}')" style="flex: 1; cursor: pointer;">
+          <small>${title}</small>
+        </div>
+        <button onclick="deleteChat('${chatId}', event)" style="
+          background: none;
+          border: none;
+          color: #ff4444;
+          cursor: pointer;
+          padding: 4px 8px;
+          font-size: 18px;
+        ">×</button>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+function loadChatFromList(chatId) {
+  const chat = chatSessions[chatId];
+  if (!chat) return;
+
+  // Clear current chat
+  document.getElementById('chat').innerHTML = '';
+
+  // Load messages
+  chat.messages.forEach(msg => {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message');
+    messageDiv.classList.add(msg.sender === 'User' ? 'message-user' : 'message-ai');
+    messageDiv.innerHTML = msg.content;
+    document.getElementById('chat').appendChild(messageDiv);
+  });
+
+  // ✅ Set as active
+  activeChatId = chatId;
+  currentSessionId = chat.sessionId;
+
+  // ✅ Rerender sidebar to update highlight
+  renderChatList();
+
+  // Close sidebar
+  document.getElementById('chatsText').classList.add('hidden');
+}
+
+
+async function saveMessageToFirebase(userMsg, aiMsg) {
+  const user = firebase.auth().currentUser;
+  if (!user || !db) return;
+  
+  // Create new chat if none active
+  if (!activeChatId) {
+    activeChatId = 'chat_' + Date.now();
+    chatSessions[activeChatId] = {
+      id: activeChatId,
+      title: userMsg.substring(0, 30),
+      messages: [],
+      sessionId: currentSessionId,
+      created: Date.now(),
+      lastUpdated: Date.now()
+    };
+  }
+  
+  // Add messages
+  chatSessions[activeChatId].messages.push(
+    {sender: 'User', content: userMsg, timestamp: Date.now()},
+    {sender: 'AI', content: aiMsg, timestamp: Date.now()}
+  );
+  chatSessions[activeChatId].lastUpdated = Date.now();
+  chatSessions[activeChatId].sessionId = currentSessionId;
+  
+  // Save to Firebase
+  try {
+    await db.collection('users').doc(user.uid).collection('chats').doc(activeChatId).set(chatSessions[activeChatId]);
+    renderChatList(); // Update sidebar
+  } catch (e) {
+    console.error('Error saving:', e);
+  }
+}
+</script>
 </body>
 </html>
