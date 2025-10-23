@@ -1900,6 +1900,33 @@ setRandomGreeting();
             <br>
           <button id="close-btn" class="close-btn">Ok</button>
           </div> -->
+<script>
+  if (localStorage.getItem(DARK_MODE_KEY) === 'true') {
+    enableDarkMode();
+  }
+
+  toggle.addEventListener('click', () => {
+    if (body.classList.contains('dark-mode')) {
+      disableDarkMode();
+    } else {
+      enableDarkMode();
+    }
+  });
+
+  function enableDarkMode() {
+    body.classList.add('dark-mode');
+    if (cardOverlay) cardOverlay.classList.add('dark');
+    if (cardInner) cardInner.classList.add('dark');
+    localStorage.setItem(DARK_MODE_KEY, 'true');
+  }
+
+  function disableDarkMode() {
+    body.classList.remove('dark-mode');
+    if (cardOverlay) cardOverlay.classList.remove('dark');
+    if (cardInner) cardInner.classList.remove('dark');
+    localStorage.setItem(DARK_MODE_KEY, 'false');
+  }
+</script>
 
 
 
@@ -1956,7 +1983,7 @@ let currentSessionId = null;
 initializeChat();
 
 function initializeChat() {
-  const input = document.getElementById('input-text');
+  const input = document.getElementById('input');
   input.addEventListener("keyup", (e) => {
     if (e.key === "Enter" && input.value.trim()) {
       sendMessage(input.value.trim());
@@ -2155,45 +2182,6 @@ async function startNewChat() {
                 dropdown.style.display = "block";
               }
             }
-            function myFunction2() {
-  // Dark mode toggle
-  const body = document.body;
-  const card = document.querySelector('.card');
-  const cardOverlay = document.querySelector('.card-overlay');
-  const cardInner = document.querySelector('.card-inner');
-  
-  if (body.classList.contains('dark-mode')) {
-    body.classList.remove('dark-mode');
-    if (card) card.classList.remove('dark');
-    if (cardOverlay) cardOverlay.classList.remove('dark');
-    if (cardInner) cardInner.classList.remove('dark');
-    localStorage.setItem('darkMode', 'false');
-  } else {
-    body.classList.add('dark-mode');
-    if (card) card.classList.add('dark');
-    if (cardOverlay) cardOverlay.classList.add('dark');
-    if (cardInner) cardInner.classList.add('dark');
-    localStorage.setItem('darkMode', 'true');
-  }
-}
-
-function myFunction3() {
-  // Toggle chat sidebar
-  const chatsText = document.getElementById('chatsText');
-  if (chatsText) {
-    chatsText.classList.toggle('hidden');
-  }
-}
-
-function openIframe(page) {
-  const iframePopup = document.getElementById('iframePopup');
-  const iframeBox = document.getElementById('iframeBox');
-  
-  if (iframePopup && iframeBox) {
-    iframeBox.src = page;
-    iframePopup.style.display = 'flex';
-  }
-}
             
             // Close the dropdown if the user clicks outside of it
             window.onclick = function(event) {
@@ -2209,11 +2197,6 @@ function openIframe(page) {
     // Check if the user already closed the popup
     const hasClosedPopup = localStorage.getItem('popupClosed');
     const popup = document.getElementById('popup');
-
-     if (!popup) return;
-  
-  // Only show the popup if it hasn't been closed before
-  if (!hasClosedPopup) {
 
     // Only show the popup if it hasn't been closed before
     if (!hasClosedPopup) {
@@ -2263,7 +2246,6 @@ function openIframe(page) {
     renderChatList();
   }
 }
-  }
   </script>
   <!-- Persistent chat history synchronization -->
   <script>
