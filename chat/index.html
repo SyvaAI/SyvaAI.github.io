@@ -2117,6 +2117,37 @@ setRandomGreeting();
   }
 </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('chatbot-modal-button');
+    const modal = document.getElementById('chatbot-modal-wrapper');
+    const closedIcon = document.querySelector('.aui-modal-button-closed-icon');
+    const openIcon = document.querySelector('.aui-modal-button-open-icon');
+
+    const toggleModal = () => {
+        const isClosed = modal.classList.contains('is-hidden');
+        const newState = isClosed ? 'open' : 'closed';
+        
+        // 1. Toggle visibility of the main modal wrapper
+        modal.classList.toggle('is-hidden', !isClosed);
+        modal.classList.toggle('is-visible', isClosed);
+        
+        // 2. Update button and icon states (for smooth icon rotation)
+        button.setAttribute('data-state', newState);
+        closedIcon.setAttribute('data-state', newState);
+        openIcon.setAttribute('data-state', newState);
+        button.setAttribute('aria-expanded', isClosed);
+    };
+
+    // Attach the toggle function to the floating button
+    button.addEventListener('click', toggleModal);
+    
+    // Optional: Add a way to close the modal (e.g., if you add a close 'X' button in your chat-toolbar)
+    // For example, if you make one of your toolbar buttons have the ID 'close-modal-btn':
+    // document.getElementById('close-modal-btn')?.addEventListener('click', toggleModal);
+});
+</script>
+
 
 
 
