@@ -126,7 +126,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #FFFFFF;
+      background-color: #0d0d0d;
     transition: background-color 0.3s, color 0.3s;
 }
     body.dark-mode {
@@ -1737,7 +1737,39 @@ h2 {
 
     </style>
 
+<div class="w-full max-w-sm bg-[#0d0d0d] p-6 rounded-xl space-y-6">
 
+    <!-- Header -->
+    <div>
+      <h1 class="text-2xl font-semibold">Hello there!</h1>
+      <p class="text-gray-400 mt-1">How can I help you today?</p>
+    </div>
+
+    <div id="chat"></div>
+
+    <!-- Suggested messages -->
+    <div class="space-y-3">
+      <button class="w-full text-left bg-[#1a1a1a] hover:bg-[#262626] transition rounded-xl px-4 py-3 text-sm">
+        <span class="text-white font-medium">What's the weather</span> 
+        <span class="text-gray-400">in San Francisco?</span>
+      </button>
+
+      <button class="w-full text-left bg-[#1a1a1a] hover:bg-[#262626] transition rounded-xl px-4 py-3 text-sm">
+        <span class="text-white font-medium">Explain React hooks</span> 
+        <span class="text-gray-400">like useState and useEffect</span>
+      </button>
+    </div>
+
+    <!-- Message input -->
+    <div class="relative">
+      <input 
+        type="text" 
+        placeholder="Send a message..." 
+        class="w-full bg-[#1a1a1a] text-gray-200 placeholder-gray-500 rounded-full py-3 px-4 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+    </div>
+
+  </div>
 
   <div class="card-overlay"></div>
   <div class="card-inner">
@@ -1757,7 +1789,10 @@ h2 {
         <button onclick="myFunction3()" id="toggleChatsBtn" class="menubut"><img src="/logos/logo/menu.png" height="20px" width="20px"></button>
         <button onclick="startNewChat()" id="toggleChatsBtn" class="menubut"><img src="/logos/logo/newchat.png" height="20px" width="20px"></button>
       </div>
-      <h3 class="font-roboto-Mono">Hello! How can I help?</h3>
+      <div>
+      <h1 class="text-2xl font-semibold">Hello there!</h1>
+      <p class="text-gray-400 mt-1">How can I help you today?</p>
+    </div>
       <!-- Scrollable transcript surface -->
        <br>
        <br>
