@@ -1795,15 +1795,6 @@ function openIframe(url) {
   // iframe box
   const box = document.createElement("div");
   box.classList.add("iframe-center-box");
-  box.innerHTML = `
-    <div class="iframe-center-header">
-      <span class="iframe-title">Embedded content</span>
-      <button class="iframe-close menubut">
-        <img src="/logos/logo/arrow.png" height="20" width="20" alt="close">
-      </button>
-    </div>
-    <iframe src="${url}" loading="lazy" frameborder="0" allowfullscreen></iframe>
-  `;
 
   overlay.appendChild(box);
   document.body.appendChild(overlay);
