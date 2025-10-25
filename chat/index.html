@@ -26,10 +26,13 @@
 <!-- Firebase v8 SDK bundles for chat authentication -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+<!-- Markdown and DOMPurify -->
+ <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- Firestore enables chat history storage -->
     <script type="module" src="index.js"></script>
 <script>
@@ -349,7 +352,7 @@ label {
   /* background-color: #3b82f6;
   color: white; */
   float: right;
-  text-align: right;
+  text-align: left;
   border-bottom-right-radius: 0;
   font-size: 20px;
 }
@@ -1711,6 +1714,46 @@ h2 {
   border-radius: 0 0 16px 16px;
   background: #fff;
 }
+
+
+
+/* Fix markdown rendering */
+.message-ai p {
+  margin: 8px 0 !important;
+  display: block !important;
+}
+
+.message-ai ul, .message-ai ol {
+  margin: 8px 0 !important;
+  padding-left: 24px !important;
+  display: block !important;
+}
+
+.message-ai li {
+  display: list-item !important;
+  margin: 4px 0 !important;
+}
+
+.message-ai strong {
+  font-weight: bold !important;
+}
+
+.message-ai br {
+  display: block !important;
+  content: "" !important;
+  margin: 4px 0 !important;
+}
+
+.message-ai h1, .message-ai h2, .message-ai h3 {
+  display: block !important;
+  margin: 12px 0 8px 0 !important;
+  font-weight: bold !important;
+}
+
+.message-ai h1 { font-size: 1.5em !important; }
+.message-ai h2 { font-size: 1.3em !important; }
+.message-ai h3 { font-size: 1.1em !important; }
+
 
     </style>
 
