@@ -1769,14 +1769,15 @@ h2 {
     </div> -->
 
     <!-- Message input -->
-     <div class="relative">
-  <input 
+<div class="relative">
+  <textarea
     id="input-text"
-    type="text" 
-    placeholder="Send a message..." 
-    class="w-full bg-[#1a1a1a] text-black placeholder-gray-500 rounded-full py-3 px-4 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500"
-  >
+    placeholder="Send a message..."
+    class="w-full bg-[#1a1a1a] text-white placeholder-gray-500 rounded-full py-3 px-4 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none max-h-80 overflow-y-auto leading-relaxed"
+    rows="1"
+  ></textarea>
 </div>
+
 
   </div>
 
@@ -1862,6 +1863,14 @@ function openIframe(url) {
 
 </script>
 
+<script>
+const textarea = document.getElementById('input-text');
+
+textarea.addEventListener('input', () => {
+  textarea.style.height = 'auto';                // reset height
+  textarea.style.height = textarea.scrollHeight + 'px'; // grow or shrink
+});
+</script>
 
 
 
