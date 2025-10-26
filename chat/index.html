@@ -2054,13 +2054,14 @@ loaderDiv.appendChild(slowSpinner);
     const delay = Math.max(0, 1000 - elapsed);
 
     setTimeout(() => {
-      loaderDiv.innerHTML = aiMessage;
-      chat.scrollTop = chat.scrollHeight;
+    // Remove the loader div
+    loaderDiv.remove();
 
-            // ADD THIS BLOCK HERE ⬇️⬇️⬇️
-      saveMessageToFirebase(message, aiMessage);
+    // Use appendMessage to properly format markdown
+    appendMessage("AI", aiMessage);
 
-
+    // Save to Firebase
+    saveMessageToFirebase(message, aiMessage);
     }, delay);
 
   } catch (error) {
