@@ -2107,7 +2107,7 @@ function closeNav() {
 }
 
 async function startNewChat() {
-  // Create a brand new chat
+  // Make sure no ghost chat is created
   const chatId = 'chat_' + Date.now();
   chatSessions[chatId] = {
     id: chatId,
@@ -2117,19 +2117,14 @@ async function startNewChat() {
     created: Date.now(),
     lastUpdated: Date.now()
   };
-  
+
   activeChatId = chatId;
   currentSessionId = null;
   document.getElementById('chat').innerHTML = '';
-  
-  // Save to Firebase
-  const user = firebase.auth().currentUser;
-  if (user && db) {
-    await db.collection('users').doc(user.uid).collection('chats').doc(chatId).set(chatSessions[chatId]);
-  }
-  
+
+  // 🟡 Only save AFTER first message is sent
   renderChatList();
-  console.log("Started new conversation:", chatId);
+  console.log("Started new conversation (not yet saved):", chatId);
 }
 
           </script>
@@ -2233,6 +2228,25 @@ async function startNewChat() {
     renderChatList();
   }
 }
+
+async function renameChat(chatId, event) {
+  event.stopPropagation();
+  const newName = prompt("Rename chat:", chatSessions[chatId]?.title || "New Chat");
+  if (!newName) return;
+
+  chatSessions[chatId].title = newName.trim();
+  const user = firebase.auth().currentUser;
+
+  if (user && db) {
+    await db.collection('users').doc(user.uid).collection('chats').doc(chatId).update({
+      title: newName.trim(),
+      lastUpdated: Date.now()
+    });
+  }
+
+  renderChatList();
+}
+
   </script>
   <!-- Persistent chat history synchronization -->
   <script>
@@ -2294,14 +2308,12 @@ function renderChatList() {
         <div onclick="loadChatFromList('${chatId}')" style="flex: 1; cursor: pointer;">
           <small>${title}</small>
         </div>
-        <button onclick="deleteChat('${chatId}', event)" style="
-          background: none;
-          border: none;
-          color: #ff4444;
-          cursor: pointer;
-          padding: 4px 8px;
-          font-size: 18px;
-        ">×</button>
+        <div style="display: flex; gap: 6px;">
+        <button onclick="renameChat('${chatId}', event)" 
+          style="background: none; border: none; color: #66ccff; cursor: pointer; padding: 4px 8px; font-size: 14px;">✎</button>
+        <button onclick="deleteChat('${chatId}', event)" 
+          style="background: none; border: none; color: #ff4444; cursor: pointer; padding: 4px 8px; font-size: 18px;">×</button>
+        </div>
       </div>
     `;
   });
