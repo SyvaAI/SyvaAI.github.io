@@ -2345,13 +2345,9 @@ function loadChatFromList(chatId) {
   document.getElementById('chat').innerHTML = '';
 
   // Load messages
-  chat.messages.forEach(msg => {
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message');
-    messageDiv.classList.add(msg.sender === 'User' ? 'message-user' : 'message-ai');
-    messageDiv.innerHTML = msg.content;
-    document.getElementById('chat').appendChild(messageDiv);
-  });
+chat.messages.forEach(msg => {
+  appendMessage(msg.sender, msg.content);  // ✅ CORRECT - uses markdown
+});
 
   // ✅ Set as active
   activeChatId = chatId;
