@@ -2063,6 +2063,19 @@ loaderDiv.appendChild(slowSpinner);
     // Save to Firebase
     saveMessageToFirebase(message, aiMessage);
     }, delay);
+    
+    if (!activeChatId || !chatSessions[activeChatId]) {
+  activeChatId = 'chat_' + Date.now();
+  chatSessions[activeChatId] = {
+    id: activeChatId,
+    title: userMsg.substring(0, 30) || "New Chat",
+    messages: [],
+    sessionId: currentSessionId,
+    created: Date.now(),
+    lastUpdated: Date.now()
+  };
+}
+
 
   } catch (error) {
     console.error("API Error:", error);
@@ -2382,6 +2395,106 @@ async function saveMessageToFirebase(userMsg, aiMsg) {
     console.error('Error saving:', e);
   }
 }
+</script>
+<script>
+  // ✅ START NEW CHAT — prevents ghost "New Chat" spam
+async function startNewChat() {
+  const chatId = 'chat_' + Date.now();
+  chatSessions[chatId] = {
+    id: chatId,
+    title: 'New Chat',
+    messages: [],
+    sessionId: null,
+    created: Date.now(),
+    lastUpdated: Date.now()
+  };
+
+  activeChatId = chatId;
+  currentSessionId = null;
+  document.getElementById('chat').innerHTML = '';
+
+  // 🟡 Don't save yet — only after first message
+  renderChatList();
+  console.log("Started new chat (not saved until message):", chatId);
+}
+
+// ✅ SAVE MESSAGE — only saves real chats + auto-titles them
+async function saveMessageToFirebase(userMsg, aiMsg) {
+  const user = firebase.auth().currentUser;
+  if (!user || !db) return;
+
+  // Create chat only when needed
+  if (!activeChatId || !chatSessions[activeChatId]) {
+    activeChatId = 'chat_' + Date.now();
+    chatSessions[activeChatId] = {
+      id: activeChatId,
+      title: userMsg.substring(0, 30) || 'New Chat',
+      messages: [],
+      sessionId: currentSessionId,
+      created: Date.now(),
+      lastUpdated: Date.now()
+    };
+  }
+
+  // Add messages to memory
+  chatSessions[activeChatId].messages.push(
+    { sender: 'User', content: userMsg, timestamp: Date.now() },
+    { sender: 'AI', content: aiMsg, timestamp: Date.now() }
+  );
+  chatSessions[activeChatId].lastUpdated = Date.now();
+  chatSessions[activeChatId].sessionId = currentSessionId;
+
+  // Auto-name from first message if still "New Chat"
+  if (chatSessions[activeChatId].title === 'New Chat' && userMsg.trim()) {
+    const newTitle = userMsg.slice(0, 30) + (userMsg.length > 30 ? '…' : '');
+    chatSessions[activeChatId].title = newTitle;
+  }
+
+  // Save to Firestore only if it has real messages
+  try {
+    if (chatSessions[activeChatId].messages.length > 0) {
+      await db.collection('users').doc(user.uid)
+        .collection('chats').doc(activeChatId)
+        .set(chatSessions[activeChatId]);
+      renderChatList();
+    }
+  } catch (e) {
+    console.error('🔥 Error saving chat:', e);
+  }
+}
+
+// ✅ LOAD CHATS — cleans up empties automatically
+async function loadChatsFromFirebase(userId) {
+  if (!db) return;
+  try {
+    const snapshot = await db.collection('users')
+      .doc(userId)
+      .collection('chats')
+      .orderBy('lastUpdated', 'desc')
+      .get();
+
+    chatSessions = {};
+    const batch = db.batch();
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.messages && data.messages.length > 0) {
+        chatSessions[doc.id] = data;
+      } else {
+        // Delete ghost/empty chats
+        const ref = db.collection('users').doc(userId).collection('chats').doc(doc.id);
+        batch.delete(ref);
+      }
+    });
+
+    await batch.commit();
+    renderChatList();
+    console.log("✅ Chats loaded, ghosts removed:", Object.keys(chatSessions).length);
+  } catch (e) {
+    console.error('⚠️ Error loading chats:', e);
+  }
+}
+
 </script>
 </body>
 </html>
