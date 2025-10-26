@@ -2096,15 +2096,6 @@ loaderDiv.appendChild(slowSpinner);
   }
 }
 
-function appendMessage(sender, message) {
-  const messageDiv = document.createElement('div');
-  messageDiv.classList.add('message');
-  messageDiv.classList.add(sender === 'User' ? 'message-user' : 'message-ai');
-  messageDiv.innerHTML = `${message}`;
-  const chat = document.getElementById('chat');
-  chat.appendChild(messageDiv);
-  chat.scrollTop = chat.scrollHeight;
-}
 
 function changeContent2() {
   alert("Coming soon!");
