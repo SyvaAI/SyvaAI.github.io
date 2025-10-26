@@ -35,29 +35,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script> <!-- Firestore enables chat history storage -->
     <script type="module" src="index.js"></script>
-<script>
-function appendMessage(sender, message) {
-  const messageDiv = document.createElement('div');
-  messageDiv.classList.add('message', sender === 'User' ? 'message-user' : 'message-ai');
 
-  // Convert Markdown to HTML safely
-  const rendered = marked.parse(message, {
-    breaks: true,
-    gfm: true,
-    highlight: (code, lang) => {
-      try {
-        return hljs.highlightAuto(code, [lang]).value;
-      } catch {
-        return code;
-      }
-    }
-  });
-
-  messageDiv.innerHTML = rendered;
-  document.getElementById('chat').appendChild(messageDiv);
-  document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
-}
-</script>
       <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -1972,6 +1950,24 @@ textarea.addEventListener('input', () => {
   }
 }
 
+</script>
+
+<script>
+function appendMessage(sender, message) {
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('message', sender === 'User' ? 'message-user' : 'message-ai');
+
+  // Convert Markdown to HTML safely
+  const rendered = marked.parse(message, {
+    breaks: true,
+    gfm: true
+    // Removed highlight option - was causing issues
+  });
+
+  messageDiv.innerHTML = DOMPurify.sanitize(rendered);  // ← Added sanitization
+  document.getElementById('chat').appendChild(messageDiv);
+  document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+}
 </script>
 
           <!-- Dropdown menu visibility management -->
