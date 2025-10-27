@@ -1757,7 +1757,6 @@ h2 {
           <div id="myDropdown" class="dropdown-content">
             <a href="#" onclick="openIframe('settings.htm')">Settings</a>
             <a href="https://syvaai.com/donate.html" style="color:rgb(3, 104, 3);">Donate</a>
-            <a href="#" onclick="openIframe('report.html')">Report somthing</a>
           </div>
         </div>
         <button onclick="myFunction3()" id="toggleChatsBtn" class="menubut"><img src="/logos/logo/menu.png" height="20px" width="20px"></button>
@@ -1799,9 +1798,8 @@ h2 {
     rows="1"
   ></textarea>
 </div>
-<p style="font-size:10px;"> SyväAI is designed to be extremely fact accurate and precise over leading AI models. However, we cannot guarantee that SyväAI is correct 100% of the time.
-SyväAI is not to be used for medical advice.
-SyväAI can take up to 30 seconds to respond sometimes, please be patient.</p>
+<a href="#" onclick="openIframe('disclamer.html')"><u>Disclamer</u> • </a> <a href="#" onclick="openIframe('license.html')"><u>License</u> • </a> <a href="#" onclick="openIframe('report.html')"><u>Report content</u> •</a>
+
 
 
   </div>
@@ -2346,7 +2344,7 @@ function loadChatFromList(chatId) {
 
   // Load messages
 chat.messages.forEach(msg => {
-  appendMessage(msg.sender, msg.content);  // ✅ CORRECT - uses markdown
+  appendMessage(msg.sender, msg.content);
 });
 
   // ✅ Set as active
