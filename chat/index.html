@@ -1962,15 +1962,23 @@ function appendMessage(sender, message) {
     // Allow ALL HTML/CSS that the AI generates
     const cleanConfig = {
       ALLOWED_TAGS: ['div', 'span', 'p', 'h1', 'h2', 'h3', 'h4', 'ul', 'ol', 'li', 'strong', 'em', 'code', 'pre', 'table', 'tr', 'td', 'th', 'thead', 'tbody', 'br', 'hr', 'a', 'img', 'small', 'details', 'summary'],
-      ALLOWED_ATTR: ['style', 'class', 'onmouseover', 'onmouseout', 'onclick', 'href', 'src', 'alt', 'title'],  // ← Added onclick for interactive elements
+      ALLOWED_ATTR: ['style', 'class', 'onmouseover', 'onmouseout', 'onclick', 'href', 'src', 'alt', 'title'],
       ALLOW_DATA_ATTR: false,
       KEEP_CONTENT: true
     };
     
-    // Parse markdown first, THEN sanitize
-    const rendered = marked.parse(message, {
+    // Parse markdown first
+    let rendered = marked.parse(message, {
       breaks: true,
       gfm: true
+    });
+    
+    // ✅ FIX: Unescape HTML entities inside <pre><code> blocks
+    rendered = rendered.replace(/<pre><code>([\s\S]*?)<\/code><\/pre>/g, (match, code) => {
+      // Decode HTML entities
+      const textarea = document.createElement('textarea');
+      textarea.innerHTML = code;
+      return textarea.value; // Returns unescaped HTML
     });
     
     messageDiv.innerHTML = DOMPurify.sanitize(rendered, cleanConfig);
