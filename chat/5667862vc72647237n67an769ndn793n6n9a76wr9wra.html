@@ -162,6 +162,95 @@ button:hover {
 }
 
     </style>
+
+    <style>
+/* Google Button Styles */
+.auth-divider {
+  text-align: center;
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.auth-divider::before {
+  left: 0;
+}
+
+.auth-divider::after {
+  right: 0;
+}
+
+.auth-divider span {
+  color: #666;
+  font-size: 0.9em;
+  padding: 0 1rem;
+  background: var(--card-bg, #161b22);
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 24px;
+  background: white;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.google-btn:hover {
+  background: #f8f8f8;
+  border-color: #ccc;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+}
+
+.google-btn:active {
+  transform: translateY(0);
+}
+
+.google-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* User avatar (for Google profile pictures) */
+#user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+  display: none; /* Hidden by default, shown when available */
+}
+
+/* Sign-in method badge (optional) */
+#signin-method {
+  display: none;
+  font-size: 0.75em;
+  padding: 2px 8px;
+  background: rgba(58, 166, 255, 0.2);
+  color: #3aa6ff;
+  border-radius: 12px;
+  margin-left: 8px;
+}
+</style>
     <!-- Login form collecting email/password credentials -->
     <div class="login-container">
         <h2>Login to <b>SyväAI</b></h2>
