@@ -3,7 +3,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth
 
 const firebaseConfig = {
   apiKey: "AIzaSyD_qlUue2zbN98YbZEdiTAUoGfD9AQ1250",
-  authDomain: "syvaai.com",
+  authDomain: "syvaai-website.firebaseapp.com",
   databaseURL: "https://syvaai-website-default-rtdb.firebaseio.com",
   projectId: "syvaai-website",
   storageBucket: "syvaai-website.appspot.com",
