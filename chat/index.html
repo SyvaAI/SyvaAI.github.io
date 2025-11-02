@@ -1732,7 +1732,42 @@ h2 {
 .message-ai h2 { font-size: 1.3em !important; }
 .message-ai h3 { font-size: 1.1em !important; }
 
+/* --- Sidenav animation for Chats --- */
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  left: 0;
+  background-color: #0d0d0d;
+  overflow-x: hidden;
+  transition: 0.4s;
+  padding-top: 60px;
+  border-right: 1px solid #333;
+}
 
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #ccc;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #fff;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  font-size: 36px;
+  color: white;
+  cursor: pointer;
+}
     </style>
 
 
@@ -1759,7 +1794,7 @@ h2 {
             <a href="https://syvaai.com/donate.html" style="color:rgb(3, 104, 3);">Donate</a>
           </div>
         </div>
-        <button onclick="myFunction3()" id="toggleChatsBtn" class="menubut"><img src="/logos/logo/menu.png" height="20px" width="20px"></button>
+        <button onclick="openNav()" class="menubut"><img src="/logos/logo/menu.png" height="20px" width="20px"></button>
         <button onclick="startNewChat()" id="toggleChatsBtn" class="menubut"><img src="/logos/logo/newchat.png" height="20px" width="20px"></button>
       </div>
     <div>
@@ -1804,11 +1839,16 @@ h2 {
 
   </div>
 
-    <div id="chatsText" class="hidden text-left">
-  <div class="login-containertwo">
-    <small><p style="color:gray;" class="text-left">Chats</p></small>
+<!-- Pop-out sidenav for Chats -->
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div id="chatsText" style="padding: 12px; text-align: left;">
+    <div class="login-containertwo">
+      <small><p style="color:gray;" class="text-left">Chats</p></small>
+    </div>
   </div>
 </div>
+
 
 
   <script>
@@ -2179,16 +2219,16 @@ async function startNewChat() {
   // Reuse your existing sendMessage() and appendMessage() functions
 </script>
 
-          <script>
-            // Select the button and the "Chats" section
-            const toggleChatsBtn = document.getElementById("toggleChatsBtn");
-            const chatsText = document.getElementById("chatsText");
-          
-            // Event listener to toggle the visibility of the "Chats" section
-            toggleChatsBtn.addEventListener("click", function() {
-              chatsText.classList.toggle("hidden");
-            });
-          </script>
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "300px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+
           
           <script>
             function myFunction() {
