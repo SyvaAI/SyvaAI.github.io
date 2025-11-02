@@ -2400,24 +2400,25 @@ function loadChatFromList(chatId) {
   const chat = chatSessions[chatId];
   if (!chat) return;
 
-  // Clear current chat
+  // Clear current chat messages
   document.getElementById('chat').innerHTML = '';
 
-  // Load messages
-chat.messages.forEach(msg => {
-  appendMessage(msg.sender, msg.content);
-});
+  // Load messages from Firestore memory
+  chat.messages.forEach(msg => {
+    appendMessage(msg.sender, msg.content);
+  });
 
-  // ✅ Set as active
+  // Set active session
   activeChatId = chatId;
   currentSessionId = chat.sessionId;
 
-  // ✅ Rerender sidebar to update highlight
+  // Re-render list to highlight the active chat
   renderChatList();
 
-  // Close sidebar
-  document.getElementById('chatsText').classList.add('hidden');
+  // ✅ Close sidenav, but DO NOT hide chat list
+  closeNav();
 }
+
 
 
 async function saveMessageToFirebase(userMsg, aiMsg) {
