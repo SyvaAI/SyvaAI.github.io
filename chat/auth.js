@@ -1,5 +1,14 @@
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 import { auth } from "./firebase-config.js";
+
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: "select_account" });
 
 export async function login(email, password) {
   try {
@@ -22,6 +31,22 @@ export async function signUp(email, password) {
   } catch (error) {
     console.error("Error signing up:", error.message);
     alert("Sign-up failed: " + error.message);
+  }
+}
+
+export async function loginWithGoogle() {
+  try {
+    console.log("Calling Firebase signInWithPopup with Google provider");
+    const userCredential = await signInWithPopup(auth, googleProvider);
+    console.log("Google user logged in:", userCredential.user);
+    window.location.href = "/chat/index.html";
+  } catch (error) {
+    console.error("Error with Google sign-in:", error.code, error.message);
+    if (error.code === "auth/popup-blocked") {
+      alert("Your browser blocked the sign-in popup. Please allow popups for this site and try again.");
+    } else if (error.code !== "auth/cancelled-popup-request") {
+      alert("Google sign-in failed: " + error.message);
+    }
   }
 }
 

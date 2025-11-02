@@ -25,11 +25,11 @@ async function checkGeoblock() {
     // Use free IP geolocation API
     const response = await fetch('https://ipapi.co/json/');
     const data = await response.json();
-    
+
     const countryCode = data.country_code;
-    
+
     console.log('User country:', countryCode);
-    
+
     if (BLOCKED_COUNTRIES.includes(countryCode)) {
       // Block access
       document.body.innerHTML = `
@@ -51,7 +51,7 @@ async function checkGeoblock() {
           </div>
         </div>
       `;
-      
+
       // Prevent any further script execution
       throw new Error('Geoblocked');
     }
@@ -66,7 +66,7 @@ async function checkGeoblock() {
 
 // Run check immediately
 checkGeoblock();
-</script>
+    </script>
     <!-- Styling for the centered login card -->
     <style>
         /* General styles */
@@ -121,19 +121,6 @@ h2 {
 button {
     width: 100%;
     padding: 12px;
-    background: #007bff;
-    border: none;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-
-}
-button {
-    width: 100%;
-    padding: 12px;
-    background: #007bff;
     border: none;
     color: white;
     font-size: 16px;
@@ -142,13 +129,46 @@ button {
     transition: background 0.3s;
 }
 
-button:hover {
+button[type="submit"] {
+    background: #007bff;
+    margin-bottom: 12px;
+}
+
+button[type="submit"]:hover {
     background: #0056b3;
+}
+
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #dadce0;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.google-btn:hover {
+    background: #f8f9fa;
+}
+
+.google-btn img {
+    width: 18px;
+    height: 18px;
+}
+
+.divider {
+    margin: 12px 0;
+    color: #888;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 /* Sign-up link */
 .signup-link {
-    margin-top: 10px;
+    margin-top: 16px;
     font-size: 14px;
 }
 
@@ -173,9 +193,16 @@ button:hover {
                 <input type="password" id="password" name="password" autocomplete="current-password" placeholder="Password" required>
             </div>
             <button type="submit">Login</button>
-            <br>
-            <a href="/chat/44d5767ad8uaudad9asda9d67da7jas7d6a79dja.html"><sub><u>Don't have an account? Click here!</u></sub></a></a>
-       
+        </form>
+        <div class="divider">or</div>
+        <button type="button" id="google-login" class="google-btn">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+            <span>Continue with Google</span>
+        </button>
+        <div class="signup-link">
+            <a href="/chat/44d5767ad8uaudad9asda9d67da7jas7d6a79dja.html"><u>Don't have an account? Click here!</u></a>
+        </div>
+
     </div>
 
 </body>

@@ -1,4 +1,4 @@
-import { login, signUp } from "./auth.js";
+import { login, signUp, loginWithGoogle, logout } from "./auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM fully loaded and parsed.");
@@ -17,6 +17,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   } else {
     console.error("Login form not found.");
+  }
+
+  const googleLoginButton = document.getElementById("google-login");
+  if (googleLoginButton) {
+    console.log("Google login button found.");
+    googleLoginButton.addEventListener("click", async () => {
+      console.log("Google login button clicked.");
+      await loginWithGoogle();
+    });
+  } else {
+    console.error("Google login button not found.");
   }
 
   // Signup form
@@ -63,8 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Show-login link not found.");
   }
 });
-
-import { logout } from "./auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // ... existing code
