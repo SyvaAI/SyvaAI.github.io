@@ -45,3 +45,95 @@ export async function logout() {
     console.error("Error signing out:", error.message);
   }
 }
+
+export async function signInWithGoogle() {
+  try {
+    console.log('🔵 Starting Google Sign-In...');
+    
+    const provider = new firebase.auth.GoogleAuthProvider();
+    
+    // Optional: Request additional info
+    provider.addScope('email');
+    provider.addScope('profile');
+    
+    // Sign in with popup
+    const result = await firebase.auth().signInWithPopup(provider);
+    
+    console.log('✅ Google Sign-In successful!', result.user);
+    return { success: true, user: result.user };
+    
+  } catch (error) {
+    console.error('❌ Google Sign-In error:', error);
+    
+    // Handle specific errors
+    let message = 'Sign-in failed';
+    
+    if (error.code === 'auth/popup-closed-by-user') {
+      message = 'Sign-in cancelled';
+    } else if (error.code === 'auth/popup-blocked') {
+      message = 'Please allow popups for this site';
+    } else if (error.code === 'auth/cancelled-popup-request') {
+      message = 'Only one popup at a time';
+    } else {
+      message = error.message;
+    }
+    
+    return { success: false, error: message };
+  }
+}
+
+/**
+ * Sign in with Google (Redirect version - better for mobile)
+ */
+export async function signInWithGoogleRedirect() {
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await firebase.auth().signInWithRedirect(provider);
+    // User will be redirected, then handleRedirectResult() will catch them
+  } catch (error) {
+    console.error('❌ Google Redirect error:', error);
+    throw error;
+  }
+}
+
+/**
+ * Handle redirect result (call this on page load)
+ */
+export async function handleRedirectResult() {
+  try {
+    const result = await firebase.auth().getRedirectResult();
+    
+    if (result.user) {
+      console.log('✅ Signed in via redirect:', result.user);
+      return { success: true, user: result.user };
+    }
+    
+    return { success: false };
+    
+  } catch (error) {
+    console.error('❌ Redirect result error:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Get sign-in method for current user
+ */
+export function getSignInMethod(user) {
+  if (!user || !user.providerData || user.providerData.length === 0) {
+    return null;
+  }
+  
+  const providerId = user.providerData[0].providerId;
+  
+  const methods = {
+    'google.com': 'Google',
+    'password': 'Email/Password',
+    'github.com': 'GitHub',
+    'microsoft.com': 'Microsoft',
+    'apple.com': 'Apple'
+  };
+  
+  return methods[providerId] || providerId;
+}
+
