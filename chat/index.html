@@ -1783,7 +1783,7 @@ h2 {
 
 
 
-<div class="w-screen bg-[#0d0d0d] px-4 sm:px-6 md:px-8 lg:px-10 py-5 rounded-[3rem] space-y-12">
+<div class="w-full max-w-7xl bg-[#0d0d0d] p-10 rounded-[3rem] flex flex-col min-h-screen">
 
     <!-- Header -->
           <div class="chat-toolbar">
@@ -1802,13 +1802,6 @@ h2 {
       <p class="text-gray-400 mt-1">How can I help you today?</p>
     </div>
     <div id="chat" style="min-height: 200px; max-height: 500px; overflow-y: auto; padding: 20px;"></div>
-    <div id="artifactPane" class="hidden fixed right-0 top-0 h-full w-[35%] bg-[#111] text-white border-l border-gray-700 overflow-y-auto transition-all">
-  <div class="flex justify-between items-center p-3 border-b border-gray-700">
-    <h2 class="text-lg font-semibold">Artifact Preview</h2>
-    <button onclick="toggleArtifact(false)" class="text-gray-400 hover:text-white text-xl">×</button>
-  </div>
-  <pre id="artifactContent" class="p-4 text-sm overflow-x-auto"></pre>
-</div>
 
     <!-- Suggested messages -->
     <!-- <div class="space-y-3">
