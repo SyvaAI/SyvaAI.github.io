@@ -1783,7 +1783,7 @@ h2 {
 
 
 
-<div class="w-full max-w-7xl bg-[#0d0d0d] p-10 rounded-[3rem] flex flex-col min-h-screen">
+<div class="w-screen bg-[#0d0d0d] px-4 sm:px-6 md:px-8 lg:px-10 py-5 rounded-[3rem] space-y-12">
 
     <!-- Header -->
           <div class="chat-toolbar">
@@ -1817,20 +1817,8 @@ h2 {
     </div> -->
 
     <!-- Message input -->
-<div class="relative">
-  <textarea
-    id="input-text"
-    placeholder="Send a message..."
-    class="w-full bg-[#0d0d0d] text-white placeholder-gray-500 rounded-xl py-3 px-4 pr-12 focus:outline-none border border-gray-600 focus:ring-2 focus:ring-blue-500 resize-none max-h-80 overflow-y-auto leading-relaxed"
-    style="background-color: #0d0d0d !important;"
-    rows="1"
-  ></textarea>
-</div>
-<a href="#" onclick="openIframe('disclamer.html')"><u>Disclamer</u> • </a> <a href="#" onclick="openIframe('license.html')"><u>License</u> • </a> <a href="#" onclick="openIframe('report.html')"><u>Report content</u></a>
-
-
-
   </div>
+
 
 <!-- Pop-out sidenav for Chats -->
 <div id="mySidenav" class="sidenav">
@@ -1840,6 +1828,27 @@ h2 {
       <small><p style="color:gray;" class="text-left">Chats</p></small>
     </div>
   </div>
+</div>
+
+  <div class="mt-auto">
+    <div class="relative">
+      <textarea
+        id="input-text"
+        placeholder="Send a message..."
+        class="w-full bg-[#0d0d0d] text-white placeholder-gray-500 rounded-xl py-3 px-4 pr-12 focus:outline-none border border-gray-600 focus:ring-2 focus:ring-blue-500 resize-none max-h-80 overflow-y-auto leading-relaxed"
+        style="background-color: #0d0d0d !important;"
+        rows="1"
+      ></textarea>
+    </div>
+    
+    <!-- Links at bottom -->
+    <div class="text-center mt-2">
+      <a href="#" onclick="openIframe('disclamer.html')"><u>Disclamer</u> • </a> 
+      <a href="#" onclick="openIframe('license.html')"><u>License</u> • </a> 
+      <a href="#" onclick="openIframe('report.html')"><u>Report content</u></a>
+    </div>
+  </div>
+  
 </div>
 
 
