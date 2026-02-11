@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SyväAI</title>
+  <link rel="icon" href="/logos/logo/SyvaAI.png" type="image/png">
+  
+  <!-- Vuetify CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@3.5.21/dist/vuetify.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Firebase v8 -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  
+  <!-- Markdown & DOMPurify -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+  
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #0d0d0d;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    
+    /* Chat area */
+    #chat {
+      min-height: 200px;
+      max-height: 500px;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    
+    /* Messages */
+    .message {
+      max-width: 80%;
+      padding: 10px 15px;
+      border-radius: 15px;
+      margin: 8px 0;
+      display: inline-block;
+      clear: both;
+    }
+    
+    .message-user {
+      float: right;
+      text-align: left;
+      border-bottom-right-radius: 0;
+      font-size: 15px;
+      background-color: #3b82f6;
+      color: white;
+    }
+    
+    .message-ai {
+      float: left;
+      text-align: left;
+      border-bottom-left-radius: 0;
+      font-size: 15px;
+      background-color: #444;
+      color: white;
+    }
+    
+    /* Toolbar */
+    .chat-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    
+    .userbutton, .menubut {
+      padding: 10px;
+      background: #e0e0e0;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .userbutton:hover, .menubut:hover {
+      background: #d6d6d6;
+    }
+    
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      overflow: auto;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      border-radius: 10px;
+      right: 0;
+    }
+    
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+    
+    /* Sidenav */
+    .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 2000;
+      top: 0;
+      left: 0;
+      background-color: #0d0d0d;
+      overflow-x: hidden;
+      transition: 0.4s;
+      padding-top: 60px;
+      border-right: 1px solid #333;
+    }
+    
+    .sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #ccc;
+      display: block;
+      transition: 0.3s;
+    }
+    
+    .sidenav a:hover {
+      color: #fff;
+    }
+    
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 20px;
+      font-size: 36px;
+      color: white;
+      cursor: pointer;
+    }
+    
+    /* Spinner */
+    .spinner {
+      width: 30px;
+      height: 30px;
+      position: relative;
+    }
+    
+    .spinner::after, .spinner::before {
+      box-sizing: border-box;
+      position: absolute;
+      content: "";
+      width: 30px;
+      height: 30px;
+      top: 50%;
+      animation: up 2.4s cubic-bezier(0, 0, 0.24, 1.21) infinite;
+      left: 50%;
+      background: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    }
+    
+    .spinner::after {
+      background: white;
+      top: calc(50% - 30px);
+      left: calc(50% - 30px);
+      animation: down 2.4s cubic-bezier(0, 0, 0.24, 1.21) infinite;
+    }
+    
+    @keyframes down {
+      0%, 100% { transform: none; }
+      25% { transform: translateX(100%); }
+      50% { transform: translateX(100%) translateY(100%); }
+      75% { transform: translateY(100%); }
+    }
+    
+    @keyframes up {
+      0%, 100% { transform: none; }
+      25% { transform: translateX(-100%); }
+      50% { transform: translateX(-100%) translateY(-100%); }
+      75% { transform: translateY(-100%); }
+    }
+    
+    /* Iframe overlay */
+    .iframe-center-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 9999;
+    }
+    
+    .iframe-center-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .iframe-center-box {
+      width: 80%;
+      max-width: 900px;
+      height: 70%;
+      background: rgba(30, 30, 30, 0.9);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.95);
+      transition: transform 0.25s ease;
+    }
+    
+    .iframe-center-overlay.visible .iframe-center-box {
+      transform: scale(1);
+    }
+    
+    .iframe-center-box iframe {
+      flex: 1;
+      border: none;
+      background: #fff;
+    }
+    
+    /* Markdown fixes */
+    .message-ai p {
+      margin: 8px 0 !important;
+      display: block !important;
+    }
+    
+    .message-ai ul, .message-ai ol {
+      margin: 8px 0 !important;
+      padding-left: 24px !important;
+      display: block !important;
+    }
+    
+    .message-ai li {
+      display: list-item !important;
+      margin: 4px 0 !important;
+    }
+    
+    .message-ai strong {
+      font-weight: bold !important;
+    }
+    
+    .message-ai h1, .message-ai h2, .message-ai h3 {
+      display: block !important;
+      margin: 12px 0 8px 0 !important;
+      font-weight: bold !important;
+    }
+    
+    .message-ai h1 { font-size: 1.5em !important; }
+    .message-ai h2 { font-size: 1.3em !important; }
+    .message-ai h3 { font-size: 1.1em !important; }
+  </style>
+</head>
+<body>
+  
+  <!-- Geolocation check -->
+  <script>
+    const BLOCKED_COUNTRIES = ['CN', 'IR', 'KP', 'SY', 'CU', 'RU', 'BY', 'MM', 'VE', 'SD', 'AF', 'SL', 'UA', 'TR'];
+    
+    async function checkGeoblock() {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        const countryCode = data.country_code;
+        
+        if (BLOCKED_COUNTRIES.includes(countryCode)) {
+          document.body.innerHTML = `
+            <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #1a1a1a; color: white; font-family: Arial, sans-serif; text-align: center; padding: 20px;">
+              <div>
+                <h1>Access Denied</h1>
+                <p>Access to this service is not available in your region.</p>
+                <p style="color: #888; font-size: 14px;">Country: ${countryCode}</p>
+              </div>
+            </div>
+          `;
+          throw new Error('Geoblocked');
+        }
+      } catch (error) {
+        if (error.message === 'Geoblocked') throw error;
+      }
+    }
+    checkGeoblock();
+  </script>
+  
+  <!-- Firebase init -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD_qlUue2zbN98YbZEdiTAUoGfD9AQ1250",
+      authDomain: "syvaai-website.firebaseapp.com",
+      databaseURL: "https://syvaai-website-default-rtdb.firebaseio.com",
+      projectId: "syvaai-website",
+      storageBucket: "syvaai-website.appspot.com",
+      messagingSenderId: "617237097658",
+      appId: "1:617237097658:web:f037266cbbf5d82e80e683",
+      measurementId: "G-CPMSS94CFR",
+    };
+    
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    
+    document.addEventListener("DOMContentLoaded", function() {
+      firebase.auth().onAuthStateChanged(user => {
+        if (!user) {
+          window.location.href = "/chat/5667862vc72647237n67an769ndn793n6n9a76wr9wra.html";
+        }
+      });
+    });
+  </script>
+  
+  <!-- Main container -->
+  <div class="w-screen bg-[#0d0d0d] px-4 sm:px-6 md:px-8 lg:px-10 py-5 rounded-[3rem] space-y-12">
+    
+    <!-- Toolbar with 3 buttons -->
+    <div class="chat-toolbar">
+      <div class="dropdown">
+        <button onclick="myFunction()" class="userbutton">
+          <img src="/logos/logo/user.png" height="20px" width="20px" alt="User">
+        </button>
+        <div id="myDropdown" class="dropdown-content">
+          <a href="#" onclick="openIframe('settings.htm')">Settings</a>
+          <a href="https://syvaai.com/donate.html" style="color:rgb(3, 104, 3);">Donate</a>
+        </div>
+      </div>
+      <button onclick="openNav()" class="menubut">
+        <img src="/logos/logo/menu.png" height="20px" width="20px" alt="Menu">
+      </button>
+      <button onclick="startNewChat()" id="toggleChatsBtn" class="menubut">
+        <img src="/logos/logo/newchat.png" height="20px" width="20px" alt="New Chat">
+      </button>
+    </div>
+    
+    <!-- Header -->
+    <div>
+      <h1 class="text-2xl font-semibold">Hello there!</h1>
+      <p class="text-gray-400 mt-1">How can I help you today?</p>
+    </div>
+    
+    <!-- Chat area (your exact div) -->
+    <div id="chat" style="min-height: 200px; max-height: 500px; overflow-y: auto; padding: 20px;"></div>
+    
+    <!-- Input area (your exact textarea) -->
+    <div class="relative">
+      <textarea
+        id="input-text"
+        placeholder="Send a message..."
+        class="w-full bg-[#0d0d0d] text-white placeholder-gray-500 rounded-xl py-3 px-4 pr-12 focus:outline-none border border-gray-600 focus:ring-2 focus:ring-blue-500 resize-none max-h-80 overflow-y-auto leading-relaxed"
+        style="background-color: #0d0d0d !important;"
+        rows="1"
+      ></textarea>
+    </div>
+    
+    <!-- Disclaimers (bottom) -->
+    <div class="text-center text-gray-500 text-sm">
+      <a href="#" onclick="openIframe('disclamer.html')"><u>Disclaimer</u></a> • 
+      <a href="#" onclick="openIframe('license.html')"><u>License</u></a> • 
+      <a href="#" onclick="openIframe('report.html')"><u>Report content</u></a>
+    </div>
+  </div>
+  
+  <!-- Sidenav for chats -->
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div id="chatsText" style="padding: 12px; text-align: left;">
+      <div style="padding: 12px;">
+        <small><p style="color:gray;">Chats</p></small>
+      </div>
+    </div>
+  </div>
+  
+  <!-- JavaScript -->
+  <script>
+    // ========================================
+    // GLOBAL STATE
+    // ========================================
+    let chatSessions = {};
+    let activeChatId = null;
+    let currentSessionId = null;
+    let db;
+    
+    // ========================================
+    // FIREBASE SETUP
+    // ========================================
+    setTimeout(() => {
+      if (firebase && firebase.firestore) {
+        db = firebase.firestore();
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            loadChatsFromFirebase(user.uid);
+          }
+        });
+      }
+    }, 1000);
+    
+    // ========================================
+    // LOAD CHATS FROM FIREBASE
+    // ========================================
+    async function loadChatsFromFirebase(userId) {
+      if (!db) return;
+      try {
+        const snapshot = await db.collection('users')
+          .doc(userId)
+          .collection('chats')
+          .orderBy('lastUpdated', 'desc')
+          .get();
+        
+        chatSessions = {};
+        const batch = db.batch();
+        
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.messages && data.messages.length > 0) {
+            chatSessions[doc.id] = data;
+          } else {
+            const ref = db.collection('users').doc(userId).collection('chats').doc(doc.id);
+            batch.delete(ref);
+          }
+        });
+        
+        await batch.commit();
+        renderChatList();
+        console.log("✅ Chats loaded:", Object.keys(chatSessions).length);
+      } catch (e) {
+        console.error('⚠️ Error loading chats:', e);
+      }
+    }
+    
+    // ========================================
+    // RENDER CHAT LIST IN SIDEBAR
+    // ========================================
+    function renderChatList() {
+      const container = document.getElementById('chatsText');
+      if (!container) return;
+      
+      const chatIds = Object.keys(chatSessions);
+      if (chatIds.length === 0) {
+        container.innerHTML = '<div style="padding: 12px;"><small><p style="color:gray;">No chats yet</p></small></div>';
+        return;
+      }
+      
+      let html = '<div style="padding: 12px;"><small><p style="color:gray;">Chats</p></small></div>';
+      
+      chatIds.forEach(chatId => {
+        const chat = chatSessions[chatId];
+        const title = chat.title || 'New Chat';
+        const isActive = chatId === activeChatId;
+        
+        html += `
+          <div style="padding: 10px; margin: 8px; background: ${isActive ? 'rgba(100,100,255,0.2)' : 'rgba(255,255,255,0.1)'}; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+            <div onclick="loadChatFromList('${chatId}')" style="flex: 1; cursor: pointer;">
+              <small>${title}</small>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button onclick="renameChat('${chatId}', event)" style="background: none; border: none; color: #66ccff; cursor: pointer; padding: 4px 8px; font-size: 14px;">✏️</button>
+              <button onclick="deleteChat('${chatId}', event)" style="background: none; border: none; color: #ff4444; cursor: pointer; padding: 4px 8px; font-size: 18px;">🗑️</button>
+            </div>
+          </div>
+        `;
+      });
+      
+      container.innerHTML = html;
+    }
+    
+    // ========================================
+    // LOAD CHAT FROM SIDEBAR
+    // ========================================
+    function loadChatFromList(chatId) {
+      const chat = chatSessions[chatId];
+      if (!chat) return;
+      
+      document.getElementById('chat').innerHTML = '';
+      
+      chat.messages.forEach(msg => {
+        appendMessage(msg.sender, msg.content);
+      });
+      
+      activeChatId = chatId;
+      currentSessionId = chat.sessionId;
+      renderChatList();
+      closeNav();
+    }
+    
+    // ========================================
+    // DELETE CHAT
+    // ========================================
+    async function deleteChat(chatId, event) {
+      event.stopPropagation();
+      
+      if (!confirm('Delete this chat?')) return;
+      
+      const user = firebase.auth().currentUser;
+      
+      if (user && db) {
+        try {
+          await db.collection('users').doc(user.uid).collection('chats').doc(chatId).delete();
+        } catch (e) {
+          console.error('Error deleting:', e);
+        }
+      }
+      
+      delete chatSessions[chatId];
+      
+      if (activeChatId === chatId) {
+        await startNewChat();
+      } else {
+        renderChatList();
+      }
+    }
+    
+    // ========================================
+    // RENAME CHAT
+    // ========================================
+    async function renameChat(chatId, event) {
+      event.stopPropagation();
+      const newName = prompt("Rename chat:", chatSessions[chatId]?.title || "New Chat");
+      if (!newName) return;
+      
+      chatSessions[chatId].title = newName.trim();
+      const user = firebase.auth().currentUser;
+      
+      if (user && db) {
+        await db.collection('users').doc(user.uid).collection('chats').doc(chatId).update({
+          title: newName.trim(),
+          lastUpdated: Date.now()
+        });
+      }
+      
+      renderChatList();
+    }
+    
+    // ========================================
+    // START NEW CHAT
+    // ========================================
+    async function startNewChat() {
+      const chatId = 'chat_' + Date.now();
+      chatSessions[chatId] = {
+        id: chatId,
+        title: 'New Chat',
+        messages: [],
+        sessionId: null,
+        created: Date.now(),
+        lastUpdated: Date.now()
+      };
+      
+      activeChatId = chatId;
+      currentSessionId = null;
+      document.getElementById('chat').innerHTML = '';
+      
+      renderChatList();
+      console.log("Started new chat:", chatId);
+    }
+    
+    // ========================================
+    // APPEND MESSAGE TO CHAT
+    // ========================================
+    function appendMessage(sender, message) {
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message', sender === 'User' ? 'message-user' : 'message-ai');
+      
+      if (sender === 'AI' || sender === 'Assistant') {
+        const cleanConfig = {
+          ALLOWED_TAGS: ['div', 'span', 'p', 'h1', 'h2', 'h3', 'h4', 'ul', 'ol', 'li', 'strong', 'em', 'code', 'pre', 'table', 'tr', 'td', 'th', 'thead', 'tbody', 'br', 'hr', 'a', 'img', 'small', 'details', 'summary'],
+          ALLOWED_ATTR: ['style', 'class', 'onmouseover', 'onmouseout', 'onclick', 'href', 'src', 'alt', 'title'],
+          ALLOW_DATA_ATTR: false,
+          KEEP_CONTENT: true
+        };
+        
+        let rendered = marked.parse(message, {
+          breaks: true,
+          gfm: true
+        });
+        
+        rendered = rendered.replace(/<pre><code>([\s\S]*?)<\/code><\/pre>/g, (match, code) => {
+          const textarea = document.createElement('textarea');
+          textarea.innerHTML = code;
+          return textarea.value;
+        });
+        
+        messageDiv.innerHTML = DOMPurify.sanitize(rendered, cleanConfig);
+      } else {
+        messageDiv.textContent = message;
+      }
+      
+      document.getElementById('chat').appendChild(messageDiv);
+      document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+    }
+    
+    // ========================================
+    // SEND MESSAGE TO API
+    // ========================================
+    async function sendMessage(message) {
+      appendMessage("User", message);
+      
+      const chat = document.getElementById('chat');
+      
+      const loaderDiv = document.createElement('div');
+      loaderDiv.classList.add('message', 'message-ai');
+      loaderDiv.innerHTML = `<div class="spinner"></div>`;
+      chat.appendChild(loaderDiv);
+      chat.scrollTop = chat.scrollHeight;
+      
+      const startTime = Date.now();
+      
+      try {
+        const response = await fetch('https://api.syvaai.com/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            question: message, 
+            top_k: 2,
+            session_id: currentSessionId
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.session_id) {
+          currentSessionId = data.session_id;
+        }
+        
+        const aiMessage = data.answer ?? data.response ?? 'Error: No response from API';
+        
+        const elapsed = Date.now() - startTime;
+        const delay = Math.max(0, 1000 - elapsed);
+        
+        setTimeout(() => {
+          loaderDiv.remove();
+          appendMessage("AI", aiMessage);
+          saveMessageToFirebase(message, aiMessage);
+        }, delay);
+        
+      } catch (error) {
+        console.error("API Error:", error);
+        
+        const elapsed = Date.now() - startTime;
+        const delay = Math.max(0, 1000 - elapsed);
+        
+        setTimeout(() => {
+          loaderDiv.innerHTML = `<p style="color: #ff4444;">Error: Could not connect to API</p>`;
+          chat.scrollTop = chat.scrollHeight;
+        }, delay);
+      }
+    }
+    
+    // ========================================
+    // SAVE MESSAGE TO FIREBASE
+    // ========================================
+    async function saveMessageToFirebase(userMsg, aiMsg) {
+      const user = firebase.auth().currentUser;
+      if (!user || !db) return;
+      
+      if (!activeChatId || !chatSessions[activeChatId]) {
+        activeChatId = 'chat_' + Date.now();
+        chatSessions[activeChatId] = {
+          id: activeChatId,
+          title: userMsg.substring(0, 30) || 'New Chat',
+          messages: [],
+          sessionId: currentSessionId,
+          created: Date.now(),
+          lastUpdated: Date.now()
+        };
+      }
+      
+      chatSessions[activeChatId].messages.push(
+        { sender: 'User', content: userMsg, timestamp: Date.now() },
+        { sender: 'AI', content: aiMsg, timestamp: Date.now() }
+      );
+      chatSessions[activeChatId].lastUpdated = Date.now();
+      chatSessions[activeChatId].sessionId = currentSessionId;
+      
+      if (chatSessions[activeChatId].title === 'New Chat' && userMsg.trim()) {
+        const newTitle = userMsg.slice(0, 30) + (userMsg.length > 30 ? '…' : '');
+        chatSessions[activeChatId].title = newTitle;
+      }
+      
+      try {
+        if (chatSessions[activeChatId].messages.length > 0) {
+          await db.collection('users').doc(user.uid)
+            .collection('chats').doc(activeChatId)
+            .set(chatSessions[activeChatId]);
+          renderChatList();
+        }
+      } catch (e) {
+        console.error('Error saving chat:', e);
+      }
+    }
+    
+    // ========================================
+    // INPUT HANDLING
+    // ========================================
+    const inputText = document.getElementById('input-text');
+    
+    inputText.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey && inputText.value.trim()) {
+        sendMessage(inputText.value.trim());
+        inputText.value = "";
+      }
+    });
+    
+    inputText.addEventListener('input', () => {
+      inputText.style.height = 'auto';
+      inputText.style.height = inputText.scrollHeight + 'px';
+    });
+    
+    // ========================================
+    // UI HELPERS
+    // ========================================
+    function myFunction() {
+      var dropdown = document.getElementById("myDropdown");
+      if (dropdown.style.display === "block") {
+        dropdown.style.display = "none";
+      } else {
+        dropdown.style.display = "block";
+      }
+    }
+    
+    window.onclick = function(event) {
+      if (!event.target.closest('.dropdown')) {
+        var dropdown = document.getElementById("myDropdown");
+        dropdown.style.display = "none";
+      }
+    }
+    
+    function openNav() {
+      document.getElementById("mySidenav").style.width = "300px";
+    }
+    
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    }
+    
+    function openIframe(url) {
+      const overlay = document.createElement("div");
+      overlay.classList.add("iframe-center-overlay");
+      
+      const box = document.createElement("div");
+      box.classList.add("iframe-center-box");
+      box.innerHTML = `<iframe src="${url}" loading="lazy" frameborder="0" allowfullscreen></iframe>`;
+      
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+      
+      setTimeout(() => overlay.classList.add("visible"), 10);
+      
+      function closeIframe() {
+        overlay.classList.remove("visible");
+        setTimeout(() => overlay.remove(), 250);
+      }
+      
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) closeIframe();
+      });
+    }
+  </script>
+</body>
+</html>

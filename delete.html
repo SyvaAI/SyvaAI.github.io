@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Account deletion confirmation screen for SyväAI chat -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SyväAI - Delete</title>
+    <link rel="icon" href="/logos/logo/SyvaAI.png" type="image/png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <!-- Firebase authentication gating for account deletion -->
+    <script type="module">
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyD_qlUue2zbN98YbZEdiTAUoGfD9AQ1250",
+            authDomain: "syvaai-website.firebaseapp.com",
+            databaseURL: "https://syvaai-website-default-rtdb.firebaseio.com",
+            projectId: "syvaai-website",
+            storageBucket: "syvaai-website.appspot.com",
+            messagingSenderId: "617237097658",
+            appId: "1:617237097658:web:f037266cbbf5d82e80e683",
+            measurementId: "G-CPMSS94CFR"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        // Check if the user is signed in
+        firebase.auth().onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = "/5667862vc72647237n67an769ndn793n6n9a76wr9wra.html"; // Redirect if no user is signed in
+            }
+        });
+
+        // Show modal when "Delete Account" is clicked
+        document.getElementById('open-modal').addEventListener('click', function() {
+            document.getElementById('modal').classList.remove('hidden');
+        });
+
+        // Close modal when "Cancel" is clicked
+        document.getElementById('close-modal').addEventListener('click', function() {
+            document.getElementById('modal').classList.add('hidden');
+        });
+
+        // Handle account deletion when "Delete Account" is confirmed
+        document.getElementById('delete-account').addEventListener('click', function() {
+            const user = firebase.auth().currentUser;
+
+            if (user) {
+                // Reauthentication prompt (e.g., for password)
+                const password = document.getElementById('password').value;
+
+                const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+                
+                user.reauthenticateWithCredential(credential).then(() => {
+                    // Proceed with account deletion
+                    user.delete().then(() => {
+                        alert("Your account has been permanently deleted.");
+                        firebase.auth().signOut();
+                        window.location.href = "/5667862vc72647237n67an769ndn793n6n9a76wr9wra.html"; // Redirect to login page
+                    }).catch((error) => {
+                        console.error("Error deleting account:", error);
+                        alert("An error occurred: " + error.message);
+                    });
+                }).catch((error) => {
+                    console.error("Reauthentication failed:", error);
+                    alert("Reauthentication failed: " + error.message);
+                });
+            }
+        });
+    </script>
+</head>
+<body class="bg-gray-800 flex items-center justify-center min-h-screen">
+
+    <!-- Primary call-to-action prompting account deletion -->
+    <div class="login-container bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+        <h1 class="text-xl font-bold mb-4">Delete Account</h1>
+        <p class="text-sm text-gray-600 mb-4">
+            Once you click that button, you will be signed out, and your account will be deleted permanently.
+        </p>
+        <button id="open-modal" class="diss w-full py-3 bg-red-500 text-white text-lg rounded-md hover:bg-red-600 transition">Delete Account Permanently</button>
+    </div>
+
+    <!-- Password confirmation modal -->
+    <div id="modal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 w-96">
+            <h2 class="text-xl font-bold mb-4">Are you sure you want to delete your account?</h2>
+            <p class="mb-6 text-sm text-gray-600">This action cannot be undone.</p>
+
+            <input type="password" id="password" placeholder="Enter your password" class="border p-2 rounded-md w-full mb-4">
+
+            <div class="flex justify-between">
+                <button class="bg-red-600 text-white p-2 rounded-md" id="delete-account">Yes, Delete Account</button>
+                <button class="bg-gray-300 text-black p-2 rounded-md" id="close-modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
