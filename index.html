@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<!-- Geolocation guard to enforce blocked regions -->
 <script>
   // Apply dark mode class *before* page paints
   (function () {
@@ -54,6 +53,7 @@
 </head>
 
 <body class="flex items-center justify-center min-h-screen">
+  <!-- Geolocation guard to enforce blocked regions -->
   <script>
     // Blocked countries
     const BLOCKED_COUNTRIES = ['CN', 'IR', 'KP', 'SY', 'CU', 'RU', 'BY', 'MM', 'VE', 'SD', 'AF', 'SL', 'UA', 'TR'];
@@ -1655,7 +1655,7 @@ body.dark-mode .greeting-message {
           </button>
           <div id="myDropdown" class="dropdown-content">
             <a href="#" onclick="openIframe('settings.htm')">Settings</a>
-            <a href="https://syvaai.com/donate.html" style="color:rgb(3, 104, 3);">Donate</a>
+            <!-- <a href="https://syvaai.com/donate.html" style="color:rgb(3, 104, 3);">Donate</a> -->
             <a href="#" onclick="openIframe('disclamer.html')">Disclamer</a>
             <a href="#" onclick="openIframe('license.html')">License</a>
             <a href="#" onclick="openIframe('report.html')">Report content</a>
@@ -1670,30 +1670,7 @@ body.dark-mode .greeting-message {
       </div>
     </div>
     <div>
-      <!-- <div>
-      <h1 class="text-2xl font-semibold">Hello there!</h1>
-      <p class="text-gray-400 mt-1">How can I help you today?</p>
-    </div> -->
       <div id="chat"></div>
-
-      <!-- Suggested messages -->
-      <!-- <div class="space-y-3">
-      <button class="w-full text-left bg-[#1a1a1a] hover:bg-[#262626] transition rounded-xl px-4 py-3 text-sm">
-        <span class="text-white font-medium">What's the weather</span> 
-        <span class="text-gray-400">in San Francisco?</span>
-      </button>
-
-      <button class="w-full text-left bg-[#1a1a1a] hover:bg-[#262626] transition rounded-xl px-4 py-3 text-sm">
-        <span class="text-white font-medium">Explain React hooks</span> 
-        <span class="text-gray-400">like useState and useEffect</span>
-      </button>
-    </div>
-
-    <button class="w-full text-left bg-[#1a1a1a] hover:bg-[#262626] transition rounded-xl px-4 py-3 text-sm">
-        <span class="text-white font-medium">What the latest news</span> 
-        <span class="text-gray-400">around the world today?</span>
-      </button>
-    </div> -->
 
 
 
@@ -1714,13 +1691,6 @@ body.dark-mode .greeting-message {
     <div id="mySidenav" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       <div style="padding: 12px;">
-        <!-- <input 
-  type="text" 
-  id="chatSearch" 
-  placeholder="Search chats..."
-  style="background-color: #0d0d0d !important;" 
-  class="w-full bg-[#0d0d0d] text-white placeholder-gray-400 rounded-lg py-2.5 px-4 pl-10 focus:outline-none border border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200"
-> -->
       </div>
       <div id="chatsText" style="padding: 12px; text-align: left;">
         <div class="login-containertwo">
@@ -1865,8 +1835,8 @@ textarea.addEventListener('change', () => {
     </script>
 
     <script>
-      // ✅ Show greeting message
-// ✅ Show greeting message with dynamic time-based greeting
+      // Show greeting message
+// Show greeting message with dynamic time-based greeting
 function showGreeting() {
   const chat = document.getElementById('chat');
   
@@ -2078,8 +2048,8 @@ async function sendMessage(message) {
     </svg>
     <small><small>API Error<hr>
     A error occured. (Error code 5002)<hr>
-    <a href="https://syvaai.com/docs/error5002/"><u>Click here</u></a>
-    for a explanation for this error.</small></small>
+    // <a href="https://syvaai.com/docs/error5002/"><u>Click here</u></a>
+    // for a explanation for this error.</small></small>
   </p></div>`;
 
     // Ensure loader shows at least 1 second
@@ -2140,8 +2110,8 @@ async function sendMessage(message) {
       </svg>
       <small><small>API Error<hr>
       A error occured. (Error code 5001)<hr>
-      <a href="https://syvaai.com/docs/error5001/"><u>Click here</u></a>
-      for a explanation for this error.</small></small>
+      // <a href="https://syvaai.com/docs/error5001/"><u>Click here</u></a>
+      // for a explanation for this error.</small></small>
     </p></div>`;
       chat.scrollTop = chat.scrollHeight;
     }, delay);
